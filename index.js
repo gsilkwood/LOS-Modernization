@@ -1,17 +1,21 @@
 'use strict';
-const periodic = require('periodicjs');
-const Promisie = require('promisie');
 
-periodic.init({
-  debug: true,
-})
-  .then(periodicInitStatus => {
-    let reactappUtilities = periodic.locals.extensions.get('@digifi-los/reactapp');
-    periodic.locals.extensions.set('periodicjs.ext.reactapp', reactappUtilities);
-    let reactappSettings = periodic.settings.extensions[ '@digifi-los/reactapp' ];
-    periodic.settings.extensions[ 'periodicjs.ext.reactapp' ] = reactappSettings;
-    const THEMESETTINGS = periodic.settings.container['decision-engine-service-container'];
-  })
-  .catch(e => {
-    console.error(e);
-  });
+const express = require('express');
+const path = require('path');
+
+// Constants
+const PORT = 8080;
+const HOST = '0.0.0.0';
+
+// App
+const app = express();
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+  res.send('Hello world from your new Express server!\\n');
+});
+
+app.listen(PORT, HOST);
+console.log(`Running on http://${HOST}:${PORT}`);

@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "engines": {
-    "node": "^6.x"
+    "node": "^18.x"
   },
   "contributors": [],
   "repository": {},
