@@ -1,12 +1,10 @@
 name: Codebase Analysis
-
 on:
   workflow_dispatch:
   push:
   pull_request:
   schedule:
     - cron: '0 6 * * 1'
-
 jobs:
   analysis:
     runs-on: ubuntu-latest
@@ -15,7 +13,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: npm install
+      
     - name: Run analysis
       run: |
         echo "Running codebase analysis..."
         # Add your analysis commands here
+        npm run lint
+        npm run test
+        npm audit
+        npx eslint .
+        npx prettier --check .
