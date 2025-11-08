@@ -1038,12 +1038,12 @@ async function sendWelcomeEmail(req, res, next) {
     const CoreMailer = periodic.core.mailer;
     const mailerSendEmail = Promisie.promisify(CoreMailer.sendEmail);
     let config = {
-      from: 'DigiFi <support@digifi.io>',
+      from: 'ClariFI <support@clarifi.io>',
       to: user.email,
-      subject: 'Welcome to DigiFi’s Loan Acquisition Platform!',
+      subject: 'Welcome to ClariFI’s Loan Acquisition Platform!',
       generateTextFromHTML: true,
       bcc: periodic.settings.periodic.emails.notification_address,
-      emailtemplatefilepath: path.resolve(periodic.config.app_root, 'content/container/decision-engine-service-container/utilities/views/email/welcome_to_digifi.ejs'),
+      emailtemplatefilepath: path.resolve(periodic.config.app_root, 'content/container/decision-engine-service-container/utilities/views/email/welcome_to_ClariFI.ejs'),
       emailtemplatedata: Object.assign({}, { user }, {
         appname: periodic.settings.name,
         hostname: periodic.settings.application.hostname || periodic.settings.name,

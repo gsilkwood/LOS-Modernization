@@ -482,10 +482,10 @@ function createComparisonChartsLayout(options) {
     let current_config = configurations[ idx ];
     let data = [];
     let aws_models = modeldata.aws_models || [];
-    let digifi_models = modeldata.digifi_models || [];
+    let ClariFI_models = modeldata.ClariFI_models || [];
     aws_models = aws_models.filter(model_name => model_name !== modeldata.selected_provider);
-    digifi_models = digifi_models.filter(model_name => model_name !== modeldata.selected_provider);
-    const all_training_models = [ modeldata.selected_provider, ...aws_models, ...digifi_models, ].length ? [ modeldata.selected_provider, ...aws_models, ...digifi_models, ] : [ 'aws', 'sagemaker_ll', 'sagemaker_xgb', ];
+    ClariFI_models = ClariFI_models.filter(model_name => model_name !== modeldata.selected_provider);
+    const all_training_models = [ modeldata.selected_provider, ...aws_models, ...ClariFI_models, ].length ? [ modeldata.selected_provider, ...aws_models, ...ClariFI_models, ] : [ 'aws', 'sagemaker_ll', 'sagemaker_xgb', ];
     const providers = all_training_models.filter(model_name => modeldata[ model_name ] && (modeldata[ model_name ].status === 'complete' || modeldata[ model_name ].status === 'completed'));
     let download_buttons = downloadButtonDropdown({ query, configuration: current_config, params, modeldata, providers, });
     let navbar = (query.page === 'score_analysis')
@@ -694,7 +694,7 @@ function runPointBiserialCorrelation(categorical_feature, numeric_feature, mean)
 }
 
 
-function mapPredictionToDigiFiScore(prediction) {
+function mapPredictionToClariFIScore(prediction) {
   switch (true) {
     case (prediction < 0.002):
       return 850;
@@ -823,6 +823,6 @@ module.exports = {
   _includeColumn,
   runChiSquaredTest,
   runPointBiserialCorrelation,
-  mapPredictionToDigiFiScore,
+  mapPredictionToClariFIScore,
   downloadButtonDropdown,
 };

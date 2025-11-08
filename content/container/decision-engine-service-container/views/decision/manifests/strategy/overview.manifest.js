@@ -128,39 +128,39 @@
 //                   externalIcon: true,
 //                   doubleList: true,
 //                   links: [{
-//                     location: 'https://docs.digifi.io/docs/overview-am',
+//                     location: 'https://docs.ClariFI.io/docs/overview-am',
 //                     name: 'Overview of Automation Management',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/adding-processing-logic-to-a-strategy',
+//                     location: 'https://docs.ClariFI.io/docs/adding-processing-logic-to-a-strategy',
 //                     name: 'Adding Processing Logic',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/variables',
+//                     location: 'https://docs.ClariFI.io/docs/variables',
 //                     name: 'Data Structuring',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/activating-a-decision-strategy',
+//                     location: 'https://docs.ClariFI.io/docs/activating-a-decision-strategy',
 //                     name: 'Activating an Automation Strategy',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/creating-editing-strategies',
+//                     location: 'https://docs.ClariFI.io/docs/creating-editing-strategies',
 //                     name: 'Creating a New Strategy',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/other',
+//                     location: 'https://docs.ClariFI.io/docs/other',
 //                     name: 'Additional Information',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/implementing-a-decision-process',
+//                     location: 'https://docs.ClariFI.io/docs/implementing-a-decision-process',
 //                     name: 'Implementing a Process Flow',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/welcome-to-digifi',
+//                     location: 'https://docs.ClariFI.io/docs/welcome-to-ClariFI',
 //                     name: 'View All',
 //                     style: {
 //                       fontWeight: 700,
 //                     },
 //                   }, ],
 //                 }, {
-//                   title: 'DigiFi Support',
+//                   title: 'ClariFI Support',
 //                   textContent: [{
 //                     name: 'Phone: 646.663.3392',
 //                   }, {
-//                     name: 'Email: support@digifi.io',
+//                     name: 'Email: support@clarifi.io',
 //                   }, ],
 //                 },
 //                 ]), ],
@@ -181,7 +181,7 @@
 //       },
 //       callbacks:['func:window.initStrategyIcons', ],
 //       'pageData': {
-//         'title': 'DigiFi | Strategy Overview',
+//         'title': 'ClariFI | Strategy Overview',
 //         'navLabel': 'Automation Management',
 //       },
 //       'onFinish': 'render',

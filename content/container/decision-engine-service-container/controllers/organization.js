@@ -436,7 +436,7 @@ async function downloadJSONToCSV(req, res) {
 
 async function checkOrganizationBalance(req, res, next) {
   let { org, } = req.controllerData;
-  if (org && org.billing && org.billing.transaction_count && org.billing.max_transactions && (org.billing.transaction_count >= org.billing.max_transactions)) res.status(404).send({ status: 'error', message: 'Account limit reached. Please contact DigiFi.', });
+  if (org && org.billing && org.billing.transaction_count && org.billing.max_transactions && (org.billing.transaction_count >= org.billing.max_transactions)) res.status(404).send({ status: 'error', message: 'Account limit reached. Please contact ClariFI.', });
   else next();
 }
 

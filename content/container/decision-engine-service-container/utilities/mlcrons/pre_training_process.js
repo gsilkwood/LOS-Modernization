@@ -135,13 +135,13 @@ async function preTrainingProcess({ mlmodel, }) { // ONLY AWS MACHINE LEARNING M
       updatedat: new Date(),
     });
     let providers = THEMESETTINGS.machinelearning.providers;
-    let digifi_models = THEMESETTINGS.machinelearning.digifi_models[mongo_mlmodel.type] || [];
+    let ClariFI_models = THEMESETTINGS.machinelearning.ClariFI_models[mongo_mlmodel.type] || [];
     providers.forEach(provider => {
       PROVIDER_DATASOURCE_FUNCS[provider]({ mlmodel, headers: included_headers, training_data_transposed, testing_data_transposed, columnTypes, });
       helpers.mlAutoProgress({ provider, model_id: mlmodel._id.toString(), interval: auto_progress_configs[provider].interval, organization: mlmodel.organization.toString(), max_progress: auto_progress_configs[provider].max_progress, });
     });
-    PROVIDER_DATASOURCE_FUNCS['digifi']({ mlmodel, headers: included_headers, training_data_transposed, testing_data_transposed, columnTypes, });
-    digifi_models.forEach(provider => {
+    PROVIDER_DATASOURCE_FUNCS['ClariFI']({ mlmodel, headers: included_headers, training_data_transposed, testing_data_transposed, columnTypes, });
+    ClariFI_models.forEach(provider => {
       helpers.mlAutoProgress({ provider, model_id: mlmodel._id.toString(), interval: auto_progress_configs[provider].interval, organization: mlmodel.organization.toString(), max_progress: auto_progress_configs[provider].max_progress, progress_value: auto_progress_configs[provider].progress_value });
     });
   } catch(e){

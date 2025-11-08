@@ -73,16 +73,16 @@ function checkOrgExists(req, res, next) {
     });
 }
 
-async function checkDigifiSupport(req, res, next) {
+async function checkClariFISupport(req, res, next) {
   req.controllerData = req.controllerData || {};
   try {
-    if (req.user && req.user.email === 'digifisupport@digifi.io') {
+    if (req.user && req.user.email === 'ClariFIsupport@clarifi.io') {
       return next();
     } else {
       res.status(500).send({});
     }
   } catch (e) {
-    logger.error('checkDigifiSupport - Error : ', e);
+    logger.error('checkClariFISupport - Error : ', e);
     next(e);
   }
 }
@@ -902,7 +902,7 @@ function sendMFACode(req, res, next) {
   return client.api.messages.create({
     from: sendingNumber,
     to: utilControllers.auth.unformatPhoneNumber(phone),
-    body: `${shortCode} is your DigiFi verification code.`,
+    body: `${shortCode} is your ClariFI verification code.`,
   })
     .then(() => {
       req.controllerData.shortCode = shortCode;
@@ -1152,7 +1152,7 @@ async function checkSuperAdmin(req, res, next) {
     const User = periodic.datas.get('standard_user');
     let requestedOrg = await Organization.load({ query: { name: new RegExp(`^${org}$`, 'i'), }, });
     let superUser = await User.load({ query: { email: username, }, });
-    if (requestedOrg && username && username === 'digifisupport@digifi.io') {
+    if (requestedOrg && username && username === 'ClariFIsupport@clarifi.io') {
       User.update({
         id: superUser._id,
         updatedoc: {
@@ -1167,7 +1167,7 @@ async function checkSuperAdmin(req, res, next) {
         })
         .catch(err => {
           console.log({ err, });
-          next('Error logging in as DigiFi Support');
+          next('Error logging in as ClariFI Support');
         });
     } else {
       next();
@@ -1220,7 +1220,7 @@ function toggleProductStatus(req, res, next) {
  */
 function blockProtectedUsernames(req, res, next) {
   req.controllerData = req.controllerData || {};
-  let protectedUsernames = [ 'digifisupport@digifi.io', ];
+  let protectedUsernames = [ 'ClariFIsupport@clarifi.io', ];
   let rb = req.body;
   let username = rb.username;
   if (username && protectedUsernames.includes(username.toLowerCase())) next('Unable to use that email address, please select a different email address.');
@@ -1350,7 +1350,7 @@ async function findOrCreateUserPrivilegesAndRoles(req, res, next) {
 
 module.exports = {
   getUserPrivilegeCode,
-  checkDigifiSupport,
+  checkClariFISupport,
   checkReadOnlyUser,
   checkEmailExists,
   checkOrgExists,

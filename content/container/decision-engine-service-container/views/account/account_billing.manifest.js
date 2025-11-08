@@ -505,7 +505,7 @@
 //       callbacks: [],
 //       onFinish: 'render',
 //       pageData: {
-//         title: 'DigiFi | Company Settings',
+//         title: 'ClariFI | Company Settings',
 //         navLabel: 'Company Settings',
 //       },
 //     },

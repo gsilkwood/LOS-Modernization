@@ -9,7 +9,7 @@ const modelSelectionUpdater = require('./model_selection_updater');
 const uploadDatasources = require('./upload_data_sources');
 const preTrainingProcess = require('./pre_training_process');
 const sageMaker = require('./sagemaker');
-const digifi = require('./digifi');
+const ClariFI = require('./ClariFI');
 
 module.exports = {
   batchUpdater,
@@ -22,5 +22,5 @@ module.exports = {
   preTrainingProcess,
   uploadDatasources,
   sageMaker,
-  digifi,
+  ClariFI,
 };

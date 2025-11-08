@@ -14,8 +14,8 @@ function overallModelUpdater() {
         return Promise.all(models.map(model => {
           model = model.toJSON ? model.toJSON() : model;
           const aws_models = model.aws_models || [];
-          const digifi_models = model.digifi_models || [];
-          const all_training_models = [...aws_models, ...digifi_models].length ? [...aws_models, ...digifi_models] : ['aws', 'sagemaker_ll', 'sagemaker_xgb'];
+          const ClariFI_models = model.ClariFI_models || [];
+          const all_training_models = [...aws_models, ...ClariFI_models].length ? [...aws_models, ...ClariFI_models] : ['aws', 'sagemaker_ll', 'sagemaker_xgb'];
           let allComplete = all_training_models.every(provider => model[provider] && (model[provider].status === 'complete' || model[provider].status === 'completed'));
           if (allComplete) {
             MLModel.update({ id: model._id.toString(), isPatch: true, updatedoc: { 

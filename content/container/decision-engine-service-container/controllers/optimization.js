@@ -2218,7 +2218,7 @@ async function getMLSimulationCases(req, res, next) {
 async function downloadTutorialData(req, res) {
   let filepath = path.join(process.cwd(), `content/files/tutorial/${req.query.type}.${req.query.export_format || 'csv'}`);
   let file = await fs.readFile(filepath);
-  let filename = (req.query.type === 'sample_data') ? 'Sample Data - DigiFi Machine Learning.csv' : 'Instructions - DigiFi Machine Learning.rtf';
+  let filename = (req.query.type === 'sample_data') ? 'Sample Data - ClariFI Machine Learning.csv' : 'Instructions - ClariFI Machine Learning.rtf';
   let contenttype = (req.query.type === 'sample_data') ? 'text/csv' : 'application/octet-stream';
   res.set('Content-Type', contenttype);
   res.attachment(filename);

@@ -12,7 +12,7 @@ const Brain = require('brain.js');
 const helpers = require('../../../helpers');
 const getCollectionCounter = helpers.getCollectionCounter;
 const { generateProjectedResult } = require('../processing_helpers');
-const { mapPredictionToDigiFiScore } = require('../../resourcehelpers');
+const { mapPredictionToClariFIScore } = require('../../resourcehelpers');
 
 async function runSingleAWSMachineLearning(req) {
   try {
@@ -56,11 +56,11 @@ async function runSingleAWSMachineLearning(req) {
       // input result
       let result = await machinelearning.predict(params).promise();
       let original_prediction = null;
-      let digifi_score = null;
+      let ClariFI_score = null;
       if (mlmodel.type === 'binary' && runIndustryProcessing) {
         const resultPredictionVal = result.Prediction.predictedScores[ result.Prediction.predictedLabel ];
         original_prediction = resultPredictionVal;
-        digifi_score = mapPredictionToDigiFiScore(resultPredictionVal);
+        ClariFI_score = mapPredictionToClariFIScore(resultPredictionVal);
         result.Prediction.predictedScores[ result.Prediction.predictedLabel ] = generateProjectedResult(scoreanalysis, resultPredictionVal);
       }
       // explainability result
@@ -94,7 +94,7 @@ async function runSingleAWSMachineLearning(req) {
         inputs: ml_variables,
         original_prediction,
         prediction: result,
-        digifi_score,
+        ClariFI_score,
         industry: mlmodel.industry || null,
         mlmodel: mlmodel._id ? mlmodel._id.toString() : null,
         decision_name: req.body.decision_name || `Case ${count}`,
@@ -212,12 +212,12 @@ async function runSingleSagemakerLL(req) {
       };
       let result = await sagemakerruntime.invokeEndpoint(params).promise();
       result = JSON.parse(Buffer.from(result.Body).toString('utf8'));
-      let digifi_score = null;
+      let ClariFI_score = null;
       let original_prediction = null;
       if (mlmodel.type === 'binary') {
         if (runIndustryProcessing) {
           original_prediction = result.predictions[ 0 ].score;
-          digifi_score = mapPredictionToDigiFiScore(original_prediction);
+          ClariFI_score = mapPredictionToClariFIScore(original_prediction);
           result.predictions[ 0 ].score = generateProjectedResult(scoreanalysis, original_prediction);
         }
       }
@@ -263,7 +263,7 @@ async function runSingleSagemakerLL(req) {
         inputs: ml_variables,
         original_prediction,
         prediction: result,
-        digifi_score,
+        ClariFI_score,
         industry: mlmodel.industry || null,
         decision_name: req.body.decision_name || `Case ${count}`,
         explainability_results,
@@ -349,11 +349,11 @@ async function runSingleSagemakerXGB(req) {
       let result = await sagemakerruntime.invokeEndpoint(params).promise();
       result = JSON.parse(Buffer.from(result.Body).toString('utf8'));
       let original_prediction = null;
-      let digifi_score = null;
+      let ClariFI_score = null;
       if (mlmodel.type === 'binary') {
         if (runIndustryProcessing) {
           original_prediction = result;
-          digifi_score = mapPredictionToDigiFiScore(result);
+          ClariFI_score = mapPredictionToClariFIScore(result);
           result = generateProjectedResult(scoreanalysis, result);
         }
       }
@@ -403,7 +403,7 @@ async function runSingleSagemakerXGB(req) {
         inputs: ml_variables,
         original_prediction,
         prediction: result,
-        digifi_score,
+        ClariFI_score,
         industry: mlmodel.industry || null,
         decision_name: req.body.decision_name || `Case ${count}`,
         explainability_results,
@@ -462,7 +462,7 @@ async function runSingleDecisionTree(req) {
       let ml_input_schema = datasource.included_columns || datasource.strategy_data_schema;
       let strategy_data_schema = JSON.parse(ml_input_schema);
       let transformations = datasource.transformations;
-      let provider_datasource = datasource.providers.digifi;
+      let provider_datasource = datasource.providers.ClariFI;
       let datasource_headers = provider_datasource.headers.filter(header => header !== 'historical_result');
       let unflattenedReqBody = require('flat').unflatten(req.body);
       let ml_variables = {};
@@ -502,11 +502,11 @@ async function runSingleDecisionTree(req) {
       let prediction = (mlmodel.type === 'binary') ? runDecisionTreePrediction.call(classifier, cleaned) : (mlmodel.type === 'categorical') ? runDecisionTreePredictionCategorical.call(classifier, cleaned) : classifier.predict(cleaned);
       prediction = prediction[ 0 ];
       let original_prediction = null;
-      let digifi_score = null;
+      let ClariFI_score = null;
       if (mlmodel.type === 'binary') {
         if (runIndustryProcessing) {
           original_prediction = prediction;
-          digifi_score = mapPredictionToDigiFiScore(prediction);
+          ClariFI_score = mapPredictionToClariFIScore(prediction);
           prediction = generateProjectedResult(scoreanalysis, prediction);
         }
       }
@@ -547,7 +547,7 @@ async function runSingleDecisionTree(req) {
         inputs: ml_variables,
         original_prediction,
         prediction,
-        digifi_score,
+        ClariFI_score,
         decision_name: req.body.decision_name || `Case ${count}`,
         explainability_results,
         averages,
@@ -626,7 +626,7 @@ async function runSingleRandomForest(req) {
       let ml_input_schema = datasource.included_columns || datasource.strategy_data_schema;
       let strategy_data_schema = JSON.parse(ml_input_schema);
       let transformations = datasource.transformations;
-      let provider_datasource = datasource.providers.digifi;
+      let provider_datasource = datasource.providers.ClariFI;
       let datasource_headers = provider_datasource.headers.filter(header => header !== 'historical_result');
       let unflattenedReqBody = require('flat').unflatten(req.body);
       let ml_variables = {};
@@ -666,11 +666,11 @@ async function runSingleRandomForest(req) {
       let prediction = (mlmodel.type === 'binary') ? runRandomForestPrediction.call(classifier, cleaned) : runRandomForestPredictionCategorical.call(classifier, cleaned);
       prediction = prediction[ 0 ];
       let original_prediction = null;
-      let digifi_score = null;
+      let ClariFI_score = null;
       if (mlmodel.type === 'binary') {
         if (runIndustryProcessing) {
           original_prediction = prediction;
-          digifi_score = mapPredictionToDigiFiScore(prediction);
+          ClariFI_score = mapPredictionToClariFIScore(prediction);
           prediction = generateProjectedResult(scoreanalysis, prediction);
         }
       }
@@ -711,7 +711,7 @@ async function runSingleRandomForest(req) {
         inputs: ml_variables,
         original_prediction,
         prediction,
-        digifi_score,
+        ClariFI_score,
         industry: mlmodel.industry || null,
         decision_name: req.body.decision_name || `Case ${count}`,
         explainability_results,
@@ -763,7 +763,7 @@ async function runSingleNeuralNetwork(req) {
       let ml_input_schema = datasource.included_columns || datasource.strategy_data_schema;
       let strategy_data_schema = JSON.parse(ml_input_schema);
       let transformations = datasource.transformations;
-      let provider_datasource = datasource.providers.digifi;
+      let provider_datasource = datasource.providers.ClariFI;
       const column_scale = provider.column_scale;
       let datasource_headers = provider_datasource.headers.filter(header => header !== 'historical_result');
       let unflattenedReqBody = require('flat').unflatten(req.body);
@@ -809,11 +809,11 @@ async function runSingleNeuralNetwork(req) {
       eval(`classifier= ${model_config}`);
       let prediction = classifier(cleaned);
       let original_prediction = null;
-      let digifi_score = null;
+      let ClariFI_score = null;
       if (mlmodel.type === 'binary') {
         if (runIndustryProcessing) {
           original_prediction = prediction['true'];
-          digifi_score = mapPredictionToDigiFiScore(prediction['true']);
+          ClariFI_score = mapPredictionToClariFIScore(prediction['true']);
           prediction = generateProjectedResult(scoreanalysis, prediction[ 'true' ]);
         } else {
           prediction = prediction[ 'true' ];
@@ -873,7 +873,7 @@ async function runSingleNeuralNetwork(req) {
         industry: mlmodel.industry || null,
         original_prediction,
         prediction,
-        digifi_score,
+        ClariFI_score,
         decision_name: req.body.decision_name || `Case ${count}`,
         explainability_results,
         averages,

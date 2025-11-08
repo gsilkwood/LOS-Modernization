@@ -125,29 +125,29 @@
 //                   doubleList: true,
 //                   links: [{
 //                     name: 'Overview of Automated Processing',
-//                     location: 'https://docs.digifi.io/docs/overview-dp',
+//                     location: 'https://docs.ClariFI.io/docs/overview-dp',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/analyze-results',
+//                     location: 'https://docs.ClariFI.io/docs/analyze-results',
 //                     name: 'Analyzing Results',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/reusable-cases',
+//                     location: 'https://docs.ClariFI.io/docs/reusable-cases',
 //                     name: 'Creating Cases',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/welcome-to-digifi',
+//                     location: 'https://docs.ClariFI.io/docs/welcome-to-ClariFI',
 //                     name: 'View All',
 //                     style: {
 //                       fontWeight: 700,
 //                     },
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/running-strategies',
+//                     location: 'https://docs.ClariFI.io/docs/running-strategies',
 //                     name: 'Running Strategies',
 //                   },],
 //                 }, {
-//                   title: 'DigiFi Support',
+//                   title: 'ClariFI Support',
 //                   textContent: [{
 //                     name: 'Phone: 646.663.3392',
 //                   }, {
-//                     name: 'Email: support@digifi.io',
+//                     name: 'Email: support@clarifi.io',
 //                   },],
 //                 },
 //                 ]),],
@@ -169,7 +169,7 @@
 //       callbacks: ['func:window.initSimulationIcons', 'func:window.setHeaders',],
 //       onFinish: 'render',
 //       pageData: {
-//         title: 'DigiFi | Automated Processing',
+//         title: 'ClariFI | Automated Processing',
 //         navLabel: 'Automated Processing',
 //       },
 //     },

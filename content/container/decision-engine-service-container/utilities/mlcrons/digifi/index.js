@@ -36,9 +36,9 @@ function openDownloadStreamAsync(bucket, file_id) {
 }
 
 /**
- * Cron that updates model status to complete when all associated digifi ml evalutions and batch predictions are set to complete.
+ * Cron that updates model status to complete when all associated ClariFI ml evalutions and batch predictions are set to complete.
  */
-async function digifi() {
+async function ClariFI() {
   try {
     const MLModel = periodic.datas.get('standard_mlmodel');
     const MLDataset = periodic.datas.get('standard_mldataset');
@@ -49,15 +49,15 @@ async function digifi() {
     setInterval(async (options) => {
       if (!running) {
         running = true;
-        let mlmodel = await MLModel.model.find({ digifi_model_status: 'pending' }).sort('updatedat').limit(1).lean();
+        let mlmodel = await MLModel.model.find({ ClariFI_model_status: 'pending' }).sort('updatedat').limit(1).lean();
         if (!Array.isArray(mlmodel) || !mlmodel.length) {
           running = false;
           return;
         }
         mlmodel = mlmodel[ 0 ];
-        let digifi_models = mlmodel.digifi_models || [];
-        if (!digifi_models.length) {
-          await MLModel.update({ updatedoc: { digifi_model_status: 'complete' }, isPatch: true, id: mlmodel._id.toString() });
+        let ClariFI_models = mlmodel.ClariFI_models || [];
+        if (!ClariFI_models.length) {
+          await MLModel.update({ updatedoc: { ClariFI_model_status: 'complete' }, isPatch: true, id: mlmodel._id.toString() });
           running = false;
         } else {
           let dataset = await MLDataset.model.findOne({ mlmodel: mlmodel._id.toString() }).lean();
@@ -68,10 +68,10 @@ async function digifi() {
           dataset.testing.rows = testingFeatureRows.map((row) => row.map(el => Number(el)));
           dataset.testing.historical_result = testingHistoricalRows.map((row) => row.map(el => Number(el)))[0];
           // dataset shaped
-          let model_directory = path.resolve(process.cwd(), `./content/files/digifi_model_scripts/${mlmodel.type}`);
-          let finished_training = new Set(digifi_models);
-          for (let i = 0; i < digifi_models.length; i++) {
-            let model_type = digifi_models[ i ];
+          let model_directory = path.resolve(process.cwd(), `./content/files/ClariFI_model_scripts/${mlmodel.type}`);
+          let finished_training = new Set(ClariFI_models);
+          for (let i = 0; i < ClariFI_models.length; i++) {
+            let model_type = ClariFI_models[ i ];
             if (mlmodel[ model_type ] && mlmodel[ model_type ].model) {
               finished_training.delete(model_type);
               if (!finished_training.size) {
@@ -79,8 +79,8 @@ async function digifi() {
                   id: mlmodel._id.toString(),
                   isPatch: true,
                   updatedoc: {
-                    digifi_model_status: (mlmodel.industry)? 'input_analysis' : 'batch_analysis',
-                    // digifi_model_status: 'batch_analysis',
+                    ClariFI_model_status: (mlmodel.industry)? 'input_analysis' : 'batch_analysis',
+                    // ClariFI_model_status: 'batch_analysis',
                   },
                 });
                 running = false;
@@ -141,8 +141,8 @@ async function digifi() {
                     },
                   });
                   const aws_models = mlmodel.aws_models || [];
-                  const digifi_models = mlmodel.digifi_models || [];
-                  const all_training_models = [...aws_models, ...digifi_models].length ? [...aws_models, ...digifi_models] : ['aws', 'sagemaker_ll', 'sagemaker_xgb'];
+                  const ClariFI_models = mlmodel.ClariFI_models || [];
+                  const all_training_models = [...aws_models, ...ClariFI_models].length ? [...aws_models, ...ClariFI_models] : ['aws', 'sagemaker_ll', 'sagemaker_xgb'];
                   const progressBarMap = all_training_models.reduce((aggregate, model, i) => {
                     aggregate[model] = i;
                     return aggregate;
@@ -154,7 +154,7 @@ async function digifi() {
                       id: mlmodel._id.toString(),
                       isPatch: true,
                       updatedoc: {
-                        digifi_model_status: (mlmodel.industry)? 'input_analysis' : 'batch_analysis',
+                        ClariFI_model_status: (mlmodel.industry)? 'input_analysis' : 'batch_analysis',
                       },
                     });
                     running = false;
@@ -172,12 +172,12 @@ async function digifi() {
     let input_running = false;
     setInterval(async (options) => {
       if (!input_running) {
-        let inputMlModels = await MLModel.model.find({ digifi_model_status: 'input_analysis' }).lean();
+        let inputMlModels = await MLModel.model.find({ ClariFI_model_status: 'input_analysis' }).lean();
         if (inputMlModels) {
           input_running = true;
           await Promise.all(inputMlModels.map(async mlmodel => {
             await mlResource.input_analysis(mlmodel);
-            await MLModel.update({ isPatch: true, id: mlmodel._id.toString(), updatedoc: { digifi_model_status: 'score_analysis' } });
+            await MLModel.update({ isPatch: true, id: mlmodel._id.toString(), updatedoc: { ClariFI_model_status: 'score_analysis' } });
           }));
         }
         input_running = false;
@@ -187,12 +187,12 @@ async function digifi() {
     let score_running = false;
     setInterval(async (options) => {
       if (!score_running) {
-        let scoreMlModels = await MLModel.model.find({ digifi_model_status: 'score_analysis' }).lean();
+        let scoreMlModels = await MLModel.model.find({ ClariFI_model_status: 'score_analysis' }).lean();
         if (scoreMlModels) {
           score_running = true;
           await Promise.all(scoreMlModels.map(async mlmodel => {
             await mlResource.score_analysis(mlmodel);
-            await MLModel.update({ isPatch: true, id: mlmodel._id.toString(), updatedoc: { digifi_model_status: 'batch_analysis' } });
+            await MLModel.update({ isPatch: true, id: mlmodel._id.toString(), updatedoc: { ClariFI_model_status: 'batch_analysis' } });
           }));
         }
         score_running = false;
@@ -203,12 +203,12 @@ async function digifi() {
     let batch_running = false;
     setInterval(async (options) => {
       if (!batch_running) {
-        let batchMlModels = await MLModel.model.find({ digifi_model_status: 'batch_analysis' }).lean();
+        let batchMlModels = await MLModel.model.find({ ClariFI_model_status: 'batch_analysis' }).lean();
         if (batchMlModels) {
           batch_running = true;
           await Promise.all(batchMlModels.map(async mlmodel => {
-            await mlResource.batch.digifi(mlmodel);
-            await MLModel.update({ isPatch: true, id: mlmodel._id.toString(), updatedoc: { digifi_model_status: 'completed' }});
+            await mlResource.batch.ClariFI(mlmodel);
+            await MLModel.update({ isPatch: true, id: mlmodel._id.toString(), updatedoc: { ClariFI_model_status: 'completed' }});
           }))
         }
         batch_running = false;
@@ -219,4 +219,4 @@ async function digifi() {
   }
 }
 
-module.exports = digifi;
+module.exports = ClariFI;

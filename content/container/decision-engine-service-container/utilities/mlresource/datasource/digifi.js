@@ -30,7 +30,7 @@ async function uploadDatasource({ training, testing, headers, training_historica
     };
     const MlDataset = periodic.datas.get('standard_mldataset');
     let created = await MlDataset.create({ newdoc, });
-    return (created && created._id) ? created._id.toString() : new Error('Failed to create dataset for digifi');
+    return (created && created._id) ? created._id.toString() : new Error('Failed to create dataset for ClariFI');
   } catch (e) {
     return e;
   }
@@ -199,7 +199,7 @@ function __createCSVString(aggregate, rowArray) {
   return aggregate;
 }
 
-async function transformDigifi({ mlmodel, headers, training_data_transposed, testing_data_transposed, columnTypes, }) {
+async function transformClariFI({ mlmodel, headers, training_data_transposed, testing_data_transposed, columnTypes, }) {
   try {
     const MLModel = periodic.datas.get('standard_mlmodel');
     const Datasource = periodic.datas.get('standard_datasource');
@@ -240,8 +240,8 @@ async function transformDigifi({ mlmodel, headers, training_data_transposed, tes
       id: datasource._id.toString(),
       isPatch: true,
       updatedoc: {
-        'providers.digifi.headers': options.headers,
-        'providers.digifi.dataset_id': dataset_id,
+        'providers.ClariFI.headers': options.headers,
+        'providers.ClariFI.dataset_id': dataset_id,
       },
       updatedat: new Date(),
     });
@@ -249,7 +249,7 @@ async function transformDigifi({ mlmodel, headers, training_data_transposed, tes
       id: mlmodel._id.toString(),
       isPatch: true,
       updatedoc: {
-        'digifi_model_status': (mongo_mlmodel.digifi_models && mongo_mlmodel.digifi_models.length) ? 'pending' : 'complete',
+        'ClariFI_model_status': (mongo_mlmodel.ClariFI_models && mongo_mlmodel.ClariFI_models.length) ? 'pending' : 'complete',
       },
       updatedat: new Date(),
     });
@@ -259,4 +259,4 @@ async function transformDigifi({ mlmodel, headers, training_data_transposed, tes
   }
 }
 
-module.exports = transformDigifi;
+module.exports = transformClariFI;

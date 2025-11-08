@@ -33,7 +33,7 @@ module.exports = {
       ],
       onFinish: 'render',
       pageData: {
-        title: 'DigiFi | Machine Learning',
+        title: 'ClariFI | Machine Learning',
         navLabel: 'Machine Learning',
       },
     },

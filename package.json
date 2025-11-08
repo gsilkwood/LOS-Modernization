@@ -1,19 +1,19 @@
 {
-  "name": "clarifi",
-  "description": "A modernized Loan Origination System (LOS) platform, formerly DigiFi.",
+  "name": "ClariFI",
+  "description": "A modernized Loan Origination System (LOS) platform, formerly ClariFI.",
   "version": "1.5.0",
   "main": "index.js",
   "engines": {
     "node": "^18.x"
   },
-  "author": "ClariFI (formerly DigiFi)",
+  "author": "ClariFI (formerly ClariFI)",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
     "pm2start": "pm2 kill && pm2 start pm2.json && pm2 log",
     "start": "node index.js --e",
     "deploy": "pm2 deploy otherdocs/deployment/ecosystem.json",
-    "test": "mocha -R spec --recursive content/container/decision-engine-service-container/test",
+    "test": "jest",
     "build": "webpack --config webpack.config.js",
     "watch": "webpack --watch --config webpack.config.js"
   },
@@ -45,6 +45,7 @@
     "cropperjs": "^1.6.2",
     "css-loader": "^7.1.2",
     "docusign-esign": "^6.5.1",
+    "dotenv": "^17.2.3",
     "elastic-apm-node": "^4.7.0",
     "eslint": "^8.57.0",
     "exceljs": "^4.4.0",
@@ -109,7 +110,9 @@
     "wkhtmltopdf": "^0.4.0"
   },
   "devDependencies": {
+    "jest": "^30.2.0",
     "mocha": "^10.8.2",
+    "supertest": "^7.1.4",
     "webpack-cli": "^5.1.4"
   }
 }

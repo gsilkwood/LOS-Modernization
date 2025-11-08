@@ -165,7 +165,7 @@ const BUTTON_DETAILS = {
   rule: {
     detail: {
       left: [buttonTypes['version']('rule')],
-      right: [buttonTypes['guide']('https://docs.digifi.io/docs/rule-building'),],
+      right: [buttonTypes['guide']('https://docs.ClariFI.io/docs/rule-building'),],
     },
     versions: {
       left: [buttonTypes['version']('rule')],

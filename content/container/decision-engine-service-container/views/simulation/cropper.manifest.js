@@ -277,7 +277,7 @@
 //         },
 //       },
 //       'pageData': {
-//         'title': 'DigiFi | Automation Management',
+//         'title': 'ClariFI | Automation Management',
 //         'navLabel': 'Automation Management',
 //       },
 //       'onFinish': 'render',

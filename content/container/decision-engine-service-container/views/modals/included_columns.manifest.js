@@ -18,7 +18,7 @@ module.exports = {
               'marginBottom': 0,
             }
           },
-          children: 'This column indicates whether the field will be included in the model training process. DigiFi suggests excluding certain fields for the following reasons:',
+          children: 'This column indicates whether the field will be included in the model training process. ClariFI suggests excluding certain fields for the following reasons:',
         }, {
           component: 'ul',
           children: [{
@@ -31,7 +31,7 @@ module.exports = {
                 'listStyleType': 'none',
               }
             },
-            children: 'DigiFi automatically suggests excluding fields with less than 0.1% correlation.',
+            children: 'ClariFI automatically suggests excluding fields with less than 0.1% correlation.',
           }, {
             component: 'li',
             children: 'Fields with String data type and too many unique values should be excluded.',
@@ -42,7 +42,7 @@ module.exports = {
                 'listStyleType': 'none',
               }
             },
-            children: 'DigiFi automatically suggests excluding fields where (# Unique times 100) > (Observations)',
+            children: 'ClariFI automatically suggests excluding fields where (# Unique times 100) > (Observations)',
           }],
         }, {
           component: 'p',

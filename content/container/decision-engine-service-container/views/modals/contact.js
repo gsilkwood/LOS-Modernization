@@ -15,7 +15,7 @@ module.exports = {
         },
         children: [{
           component: 'p',
-          children: 'DigiFi’s support team is available and happy to assist. Please email us at support@digifi.io or call us at 646-663-3392. Our hours of operation are 9am - 6pm EST (Monday - Friday).'
+          children: 'ClariFI’s support team is available and happy to assist. Please email us at support@clarifi.io or call us at 646-663-3392. Our hours of operation are 9am - 6pm EST (Monday - Friday).'
         }, {
           component: 'p',
           children: 'We look forward to hearing from you!'  

@@ -289,7 +289,7 @@ module.exports = {
       callbacks: [],
       onFinish: 'render',
       pageData: {
-        title: 'DigiFi | Lending CRM',
+        title: 'ClariFI | Lending CRM',
         navLabel: 'Lending CRM',
       },
     },

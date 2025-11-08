@@ -26,18 +26,18 @@ function handleScoreAnalysis(options) {
       if (strategy_data_schema[modelDriverKey].data_type === 'Number') {
         bins.forEach((bin, bin_idx) => {
           csvContent.push([bin, scoreData.model_driver_map[modelDriverKey][granularity][bin_idx]]);
-          headers = ['DigiFi Score', modelDriverKey];
+          headers = ['ClariFI Score', modelDriverKey];
         })
       } else {
         bins.forEach((bin, bin_idx) => {
           csvContent.push([bin, ...Object.values(scoreData.model_driver_map[modelDriverKey][granularity][bin_idx][modelDriverKey])]);
         })
-        headers = ['DigiFi Score'].concat(Object.keys(scoreData.model_driver_map[modelDriverKey][granularity][0][modelDriverKey]));
+        headers = ['ClariFI Score'].concat(Object.keys(scoreData.model_driver_map[modelDriverKey][granularity][0][modelDriverKey]));
       }
       // title = `Model Drivers - ${modelDriverKey}`;
     } else if (time_series) {
       headers = new Array(37).fill(0).map((el, idx) => `CDR % - ${idx} Month(s)`);
-      headers.unshift('DigiFi Score');
+      headers.unshift('ClariFI Score');
       bins.forEach((bin, bin_idx) => {
         csvContent.push([bin, ...scoreData[values[0]].filter(el => !!el).map((dataObj, idx) => dataObj[`line_${bin_idx}`])]);
       })

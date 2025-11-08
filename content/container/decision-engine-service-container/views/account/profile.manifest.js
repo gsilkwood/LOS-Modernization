@@ -339,7 +339,7 @@ module.exports = {
       callbacks: [],
       onFinish: 'render',
       pageData: {
-        title: 'DigiFi |  My Account',
+        title: 'ClariFI |  My Account',
         navLabel: 'My Account',
       },
     },

@@ -17,7 +17,7 @@ const INDUSTRY_ML_SUBTABS = [ {
   label: 'Input Data Analysis',
   location: 'input_analysis/0',
 }, {
-  label: 'DigiFi Score Analysis',
+  label: 'ClariFI Score Analysis',
   location: 'score_analysis/0',
 }, {
   label: 'Model Evaluation',

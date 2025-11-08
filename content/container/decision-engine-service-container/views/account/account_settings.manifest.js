@@ -58,7 +58,7 @@
 //                 accountdata: ['accountdata', 'user', 'association', 'organization', ],
 //               },
 //               props: {
-//                 href: 'https://digifi.io',
+//                 href: 'https://ClariFI.io',
 //                 target: '_blank',
 //                 rel: 'noopener noreferrer',
 //                 className:'__re-bulma_button __re-bulma_is-primary',
@@ -337,7 +337,7 @@
 //       callbacks: [],
 //       onFinish: 'render',
 //       pageData: {
-//         title: 'DigiFi | Company Settings',
+//         title: 'ClariFI | Company Settings',
 //         navLabel: 'Company Settings',
 //       },
 //     },

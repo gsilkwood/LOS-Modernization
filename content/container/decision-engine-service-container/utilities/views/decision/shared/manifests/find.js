@@ -133,7 +133,7 @@ function buildContent(options) {
               ? references.guideLinks.rulesEngine.strategies
               : (options.collection === 'variable')
                 ? references.guideLinks.rulesEngine.variables
-                : `https://docs.digifi.io/docs/${pluralize(options.collection)}`,
+                : `https://docs.ClariFI.io/docs/${pluralize(options.collection)}`,
             aProps: {
               target: '_blank',
               className: '__re-bulma_button __re-bulma_is-primary',
@@ -211,7 +211,7 @@ function generateManifests(options) {
         'callbacks': 'func:window.updateGlobalSearchBar',
         'onFinish': 'render',
         'pageData': {
-          'title': 'DigiFi | Decision Engine',
+          'title': 'ClariFI | Decision Engine',
           'navLabel': 'Decision Engine',
         },
       },

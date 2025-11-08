@@ -118,39 +118,39 @@
 //                   externalIcon: true,
 //                   doubleList: true,
 //                   links: [{
-//                     location: 'https://docs.digifi.io/docs/overview-ai',
+//                     location: 'https://docs.ClariFI.io/docs/overview-ai',
 //                     name: 'Overview of Artificial Intelligence',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/binary-model-evaluation',
+//                     location: 'https://docs.ClariFI.io/docs/binary-model-evaluation',
 //                     name: 'Binary Model Evaluation',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/adding-a-data-source',
+//                     location: 'https://docs.ClariFI.io/docs/adding-a-data-source',
 //                     name: 'Adding a Data Source',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/linear-model-evaluation',
+//                     location: 'https://docs.ClariFI.io/docs/linear-model-evaluation',
 //                     name: 'Linear Model Evaluation',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/training-an-ml-model',
+//                     location: 'https://docs.ClariFI.io/docs/training-an-ml-model',
 //                     name: 'Training a Model',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/categorical-model-evaluation',
+//                     location: 'https://docs.ClariFI.io/docs/categorical-model-evaluation',
 //                     name: 'Categorical Model Evaluation',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/evaluating-predictive-power',
+//                     location: 'https://docs.ClariFI.io/docs/evaluating-predictive-power',
 //                     name: 'Evaluating Predictive Power',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/welcome-to-digifi',
+//                     location: 'https://docs.ClariFI.io/docs/welcome-to-ClariFI',
 //                     name: 'View All',
 //                     style: {
 //                       fontWeight: 700,
 //                     },
 //                   }, ],
 //                 }, {
-//                   title: 'DigiFi Support',
+//                   title: 'ClariFI Support',
 //                   textContent: [{
 //                     name: 'Phone: 646.663.3392',
 //                   }, {
-//                     name: 'Email: support@digifi.io',
+//                     name: 'Email: support@clarifi.io',
 //                   }, ],
 //                 },
 //                 ]), ],
@@ -172,7 +172,7 @@
 //       callbacks: ['func:window.setHeaders', 'func:window.initOptimizationIcons',],
 //       onFinish: 'render',
 //       pageData: {
-//         title: 'DigiFi | Artificial Intelligence',
+//         title: 'ClariFI | Artificial Intelligence',
 //         navLabel: 'Artificial Intelligence',
 //       },
 //     },

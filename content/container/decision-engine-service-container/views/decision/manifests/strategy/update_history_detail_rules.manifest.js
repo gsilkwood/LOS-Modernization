@@ -46,7 +46,7 @@ module.exports = {
         },
       },
       'pageData': {
-        'title': 'DigiFi | Strategy Management',
+        'title': 'ClariFI | Strategy Management',
         'navLabel': 'Strategy Management',
       },
       'onFinish': 'render',

@@ -209,7 +209,7 @@ module.exports = {
       callbacks: [ 'func:window.updateGlobalSearchBar', ],
       onFinish: 'render',
       pageData: {
-        title: 'DigiFi | Lending CRM',
+        title: 'ClariFI | Lending CRM',
         navLabel: 'Lending CRM',
       },
     },

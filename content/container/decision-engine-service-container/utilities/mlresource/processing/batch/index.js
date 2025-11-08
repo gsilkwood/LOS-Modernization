@@ -9,7 +9,7 @@ const DTRegression = require('@digifi/ml-cart').DecisionTreeRegression;
 const RFClassifier = require('ml-random-forest').RandomForestClassifier;
 const Brain = require('brain.js');
 const { generateProjectedResult } = require('../processing_helpers');
-const { mapPredictionToDigiFiScore } = require('../../resourcehelpers');
+const { mapPredictionToClariFIScore } = require('../../resourcehelpers');
 
 async function runBatchAWSMachineLearning({ req, count, case_data, user, organization, machinelearning, }) {
   try {
@@ -48,10 +48,10 @@ async function runBatchAWSMachineLearning({ req, count, case_data, user, organiz
       let result = await machinelearning.predict(params).promise();
       const resultPredictionVal = result.Prediction.predictedScores[ result.Prediction.predictedLabel ];
       let original_prediction = null;
-      let digifi_score = null;
+      let ClariFI_score = null;
       if (mlmodel.type === 'binary' && runIndustryProcessing) {
         original_prediction = resultPredictionVal;
-        digifi_score = mapPredictionToDigiFiScore(resultPredictionVal);
+        ClariFI_score = mapPredictionToClariFIScore(resultPredictionVal);
         result.Prediction.predictedScores[ result.Prediction.predictedLabel ] = generateProjectedResult(scoreanalysis, resultPredictionVal);
       }
       
@@ -79,7 +79,7 @@ async function runBatchAWSMachineLearning({ req, count, case_data, user, organiz
         inputs: base_variables,
         original_prediction,
         prediction: result,
-        digifi_score,
+        ClariFI_score,
         provider: 'aws',
         explainability_results,
         averages,
@@ -193,11 +193,11 @@ async function runBatchSagemakerLL({ req, count, case_data, user, organization, 
       let result = await sagemakerruntime.invokeEndpoint(params).promise();
       result = JSON.parse(Buffer.from(result.Body).toString('utf8'));
       let original_prediction = null;
-      let digifi_score = null;
+      let ClariFI_score = null;
       if (mlmodel.type === 'binary') {
         if (runIndustryProcessing) {
           original_prediction = result.predictions[ 0 ].score;
-          digifi_score = mapPredictionToDigiFiScore(original_prediction);
+          ClariFI_score = mapPredictionToClariFIScore(original_prediction);
           result.predictions[ 0 ].score = generateProjectedResult(scoreanalysis, original_prediction);
         }
       }
@@ -236,7 +236,7 @@ async function runBatchSagemakerLL({ req, count, case_data, user, organization, 
         inputs: ml_variables,
         original_prediction,
         prediction: result,
-        digifi_score,
+        ClariFI_score,
         decision_name: req.body.decision_name || `Case ${count}`,
         explainability_results,
         industry: mlmodel.industry || null,
@@ -314,11 +314,11 @@ async function runBatchSagemakerXGB({ req, count, case_data, user, organization,
       let result = await sagemakerruntime.invokeEndpoint(params).promise();
       result = JSON.parse(Buffer.from(result.Body).toString('utf8'));
       let original_prediction = null;
-      let digifi_score = null;
+      let ClariFI_score = null;
       if (mlmodel.type === 'binary') {
         if (runIndustryProcessing) {
           original_prediction = result;
-          digifi_score = mapPredictionToDigiFiScore(result);
+          ClariFI_score = mapPredictionToClariFIScore(result);
           result = generateProjectedResult(scoreanalysis, result);
         }
       }
@@ -356,7 +356,7 @@ async function runBatchSagemakerXGB({ req, count, case_data, user, organization,
         inputs: ml_variables,
         original_prediction,
         prediction: result,
-        digifi_score,
+        ClariFI_score,
         decision_name: req.body.decision_name || `Case ${count}`,
         explainability_results,
         industry: mlmodel.industry || null,
@@ -413,7 +413,7 @@ async function runBatchDecisionTree({ req, count, case_data, user, organization,
       let ml_input_schema = datasource.included_columns || datasource.strategy_data_schema;
       let strategy_data_schema = JSON.parse(ml_input_schema);
       let transformations = datasource.transformations;
-      let provider_datasource = datasource.providers.digifi;
+      let provider_datasource = datasource.providers.ClariFI;
       let datasource_headers = provider_datasource.headers.filter(header => header !== 'historical_result');
       let ml_variables = {};
       let features = datasource_headers.map((hd, idx) => {
@@ -448,11 +448,11 @@ async function runBatchDecisionTree({ req, count, case_data, user, organization,
       let prediction = (mlmodel.type === 'binary') ? runDecisionTreePrediction.call(classifier, cleaned) : (mlmodel.type === 'categorical') ? runDecisionTreePredictionCategorical.call(classifier, cleaned) : classifier.predict(cleaned);
       prediction = prediction[ 0 ];
       let original_prediction = null;
-      let digifi_score = null;
+      let ClariFI_score = null;
       if (mlmodel.type === 'binary') {
         if (runIndustryProcessing) {
           original_prediction = prediction;
-          digifi_score = mapPredictionToDigiFiScore(prediction);
+          ClariFI_score = mapPredictionToClariFIScore(prediction);
           prediction = generateProjectedResult(scoreanalysis, prediction);
         }
       }
@@ -486,7 +486,7 @@ async function runBatchDecisionTree({ req, count, case_data, user, organization,
         inputs: ml_variables,
         original_prediction,
         prediction,
-        digifi_score,
+        ClariFI_score,
         decision_name: req.body.decision_name || `Case ${count}`,
         explainability_results,
         industry: mlmodel.industry || null,
@@ -564,7 +564,7 @@ async function runBatchRandomForest({ req, count, case_data, user, organization,
       let ml_input_schema = datasource.included_columns || datasource.strategy_data_schema;
       let strategy_data_schema = JSON.parse(ml_input_schema);
       let transformations = datasource.transformations;
-      let provider_datasource = datasource.providers.digifi;
+      let provider_datasource = datasource.providers.ClariFI;
       let datasource_headers = provider_datasource.headers.filter(header => header !== 'historical_result');
       let ml_variables = {};
       let features = datasource_headers.map((hd, idx) => {
@@ -599,11 +599,11 @@ async function runBatchRandomForest({ req, count, case_data, user, organization,
       let prediction = (mlmodel.type === 'binary') ? runRandomForestPrediction.call(classifier, cleaned) : runRandomForestPredictionCategorical.call(classifier, cleaned);
       prediction = prediction[ 0 ];
       let original_prediction = null;
-      let digifi_score = null;
+      let ClariFI_score = null;
       if (mlmodel.type === 'binary') {
         if (runIndustryProcessing) {
           original_prediction = prediction;
-          digifi_score = mapPredictionToDigiFiScore(prediction);
+          ClariFI_score = mapPredictionToClariFIScore(prediction);
           prediction = generateProjectedResult(scoreanalysis, prediction);
         }
       }
@@ -637,7 +637,7 @@ async function runBatchRandomForest({ req, count, case_data, user, organization,
         inputs: ml_variables,
         original_prediction,
         prediction,
-        digifi_score,
+        ClariFI_score,
         decision_name: req.body.decision_name || `Case ${count}`,
         explainability_results,
         industry: mlmodel.industry || null,
@@ -686,7 +686,7 @@ async function runBatchNeuralNetwork({ req, count, case_data, user, organization
       let ml_input_schema = datasource.included_columns || datasource.strategy_data_schema;
       let strategy_data_schema = JSON.parse(ml_input_schema);
       let transformations = datasource.transformations;
-      let provider_datasource = datasource.providers.digifi;
+      let provider_datasource = datasource.providers.ClariFI;
       const column_scale = provider.column_scale;
       let datasource_headers = provider_datasource.headers.filter(header => header !== 'historical_result');
       let ml_variables = {};
@@ -727,11 +727,11 @@ async function runBatchNeuralNetwork({ req, count, case_data, user, organization
       eval(`classifier= ${model_config}`);
       let prediction = classifier(cleaned);
       let original_prediction = null;
-      let digifi_score = null;
+      let ClariFI_score = null;
       if (mlmodel.type === 'binary') {
         if (runIndustryProcessing) {
           original_prediction = prediction['true'];
-          digifi_score = mapPredictionToDigiFiScore(prediction['true']);
+          ClariFI_score = mapPredictionToClariFIScore(prediction['true']);
           prediction = generateProjectedResult(scoreanalysis, prediction[ 'true' ]);
         } else {
           prediction = prediction[ 'true' ];
@@ -782,7 +782,7 @@ async function runBatchNeuralNetwork({ req, count, case_data, user, organization
         inputs: ml_variables,
         original_prediction,
         prediction,
-        digifi_score,
+        ClariFI_score,
         decision_name: req.body.decision_name || `Case ${count}`,
         explainability_results,
         industry: mlmodel.industry || null,

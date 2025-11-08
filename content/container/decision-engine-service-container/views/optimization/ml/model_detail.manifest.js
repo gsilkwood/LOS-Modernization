@@ -246,7 +246,7 @@ module.exports = {
       'callbacks': ['func:window.setHeaders',],
       onFinish: 'render',
       pageData: {
-        title: 'DigiFi | Machine Learning',
+        title: 'ClariFI | Machine Learning',
         navLabel: 'Machine Learning',
       },
     },

@@ -964,7 +964,7 @@ async function limitMaxStrategies(req, res, next) {
   let stratCount = (req.body && req.body.variables && req.body.variables.length) ? req.body.variables.length : 1;
 
   if (stratCount && org && org.billing && org.billing.max_api_batch && (stratCount > org.billing.max_api_batch)) {
-    error = `Maximum number of strategies exceeded. Please limit batch requests to ${org.billing.max_api_batch} or less. Please contact DigiFi to increase.`;
+    error = `Maximum number of strategies exceeded. Please limit batch requests to ${org.billing.max_api_batch} or less. Please contact ClariFI to increase.`;
   }
 
   if (error) {
