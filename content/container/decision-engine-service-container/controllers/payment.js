@@ -304,7 +304,7 @@ async function checkOrganizationStatus(req, res, next) {
   //   error = 'Account limit reached. Payment required before running additional processes';
   // }
   if (org && org.billing && org.billing.transaction_count && org.billing.max_transactions && (org.billing.transaction_count >= org.billing.max_transactions)) {
-    error = 'Account limit reached. Please contact DigiFi.';
+    error = 'Account limit reached. Please contact ClariFI.';
   }
   if (req.url.match(/ml_rules_engine/i) && org && org.products && org.products[ 'rules_engine' ] && !org.products[ 'rules_engine' ].active) {
     error = 'You have not activated the requested product';

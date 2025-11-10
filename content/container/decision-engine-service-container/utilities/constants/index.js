@@ -276,7 +276,7 @@ const RULES_TEMPLATE_COMPARATOR_MAP = {
 
 const CHART_COLORS = [ '#A166FF', '#70AD47', '#189fdd', '#2f5597', '#ff9900', '#7030a0', '#d64d5e', '#7D2E68', '#c55a11', '#E5BDBD', '#4B88A2', '#F90031', '#A100FF', '#759FBC', '#2F5377', '#251351', '#463730', '#436209', '#F2B216', '#00FF04', '#7EB51E', '#1F5673', '#A5FFD6', '#D1483E', '#90C3C8', '#3391C4', '#355553', '#FF5973', '#C97B84', '#DB7C00', '#1E87C7', '#41337A', '#FFF200', '#1B1C36', '#078053', '#B9B8D3', '#7FAD99', '#331E36', '#FFCFD2', '#6EA4BF', '#068EA0', '#2BD1FF', '#E66A46', '#FF3700', '#FF4300', '#00FFF6', '#003DB7', '#FFDF00', '#D3D4D9', '#F0A095', '#75DDDD', ];
 
-const DIGIFI_COLOR = '#007aff';
+const ClariFI_COLOR = '#007aff';
 
 module.exports = {
   score_analysis: require('./score_analysis'),
@@ -296,5 +296,5 @@ module.exports = {
   RULES_TEMPLATE_DOWNLOAD_CONSTANTS,
   RULES_TEMPLATE_COMPARATOR_MAP,
   CHART_COLORS,
-  DIGIFI_COLOR,
+  ClariFI_COLOR,
 };

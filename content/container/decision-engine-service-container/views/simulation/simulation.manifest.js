@@ -47,7 +47,7 @@
 //       callbacks: [ 'func:window.setHeaders', 'func:window.filterDataSourceFile', 'func:window.setHeaders', ],
 //       onFinish: 'render',
 //       pageData: {
-//         title: 'DigiFi | Automated Processing',
+//         title: 'ClariFI | Automated Processing',
 //         navLabel: 'Automated Processing',
 //       },
 //     },

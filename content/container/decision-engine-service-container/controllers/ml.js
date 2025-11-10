@@ -31,7 +31,7 @@ const fs = Promisie.promisifyAll(require('fs-extra'));
 const FETCH_PROVIDER_BATCH_DATA = mlresource.fetchProviderBatchData;
 const mongodb = require('mongodb');
 const ObjectId = mongodb.ObjectID;
-const { openDownloadStreamAsync, mapPredictionToDigiFiScore } = mlresource.resourcehelpers;
+const { openDownloadStreamAsync, mapPredictionToClariFIScore } = mlresource.resourcehelpers;
 const { handleScoreAnalysis, handleInputVariableInputAnalysis, handleSummaryInputAnalysis } = utilities.controllers.ml;
 /**
  * Formats the uploaded csv into an array of data rows
@@ -55,7 +55,7 @@ function readCSVDataSource(req, res, next) {
         req.unpipe(busboy);
         let error_message;
         if (isPremium) error_message = `Data sources are limited to ${MAX_DATA_SOURCE_FILESIZE / 1048576}MB. Please delete data source rows from file before upload.`;
-        else error_message = `The maximum file size is ${MAX_DATA_SOURCE_FILESIZE / 1048576}MB. Larger models can be trained if you have a Corporate or Enterprise account. Please contact DigiFi at support@digifi.io for more information.`;
+        else error_message = `The maximum file size is ${MAX_DATA_SOURCE_FILESIZE / 1048576}MB. Larger models can be trained if you have a Corporate or Enterprise account. Please contact ClariFI at support@clarifi.io for more information.`;
         res.status(500).send({ message: error_message, });
       } else if (req.headers[ 'content-length' ] < (MIN_DATA_SOURCE_FILESIZE || 10240)) {
         hasError = true;
@@ -526,7 +526,7 @@ async function getScoreAnalysis(req, res, next) {
     next();
   } catch (e) {
     periodic.logger.warn(e.message);
-    res.status(500).send({ message: 'Error retrieving DigiFi score analysis data.', });
+    res.status(500).send({ message: 'Error retrieving ClariFI score analysis data.', });
   }
 }
 
@@ -999,7 +999,7 @@ async function trainProviderModels(req, res, next) {
       let mlmodel = req.controllerData.mlmodel;
       let datasource = mlmodel.datasource;
       const aws_models = THEMESETTINGS.machinelearning.providers || [];
-      const digifi_models = THEMESETTINGS.machinelearning.digifi_models[ mlmodel.type ] || [];
+      const ClariFI_models = THEMESETTINGS.machinelearning.ClariFI_models[ mlmodel.type ] || [];
       //PROVIDER LIST
       await hmsetAsync(`${periodic.environment}_ml_preprocessing:${mlmodel._id.toString()}`, {
         _id: mlmodel._id.toString(),
@@ -1017,7 +1017,7 @@ async function trainProviderModels(req, res, next) {
           updatedat: new Date(),
           selected_provider: 'neural_network',
           aws_models,
-          digifi_models
+          ClariFI_models
         },
         isPatch: true,
       });
@@ -1697,15 +1697,15 @@ async function deleteModel(req, res, next) {
         if (err) logger.warn(err);
       });
 
-      // digifi models delete
+      // ClariFI models delete
       await Promise.all([ 'decision_tree', 'random_forest', 'neural_network' ].map(async provider => {
         if (mlmodel[ provider ]) {
           if (mlmodel[ provider ].batch_training_id) {
-            // delete digifi model mongo Training Batch Prediction
+            // delete ClariFI model mongo Training Batch Prediction
             await BatchPrediction.delete({ deleteid: mlmodel[ provider ].batch_training_id._id.toString(), });
           }
           if (mlmodel[ provider ].batch_testing_id) {
-            // delete digifi model mongo Testing Batch Prediction
+            // delete ClariFI model mongo Testing Batch Prediction
             await BatchPrediction.delete({ deleteid: mlmodel[ provider ].batch_testing_id._id.toString(), });
           }
         }
@@ -1759,7 +1759,7 @@ async function updateModelStatusToDeleting(req, res, next) {
 async function downloadSampleDataSourceData(req, res) {
   let filepath = path.join(process.cwd(), `content/files/sample/${req.query.type}.${req.query.export_format || 'csv'}`);
   let file = await fs.readFile(filepath);
-  let filename = `Sample Data - ${capitalize(req.query.type)} - DigiFi Machine Learning.csv`;
+  let filename = `Sample Data - ${capitalize(req.query.type)} - ClariFI Machine Learning.csv`;
   let contenttype = 'text/csv';
   res.set('Content-Type', contenttype);
   res.attachment(filename);
@@ -1769,7 +1769,7 @@ async function downloadSampleDataSourceData(req, res) {
 async function downloadTutorialData(req, res) {
   let filepath = path.join(process.cwd(), `content/files/tutorial/${req.query.type}.${req.query.export_format || 'csv'}`);
   let file = await fs.readFile(filepath);
-  let filename = (req.query.type === 'sample_data') ? 'Sample Data - DigiFi Machine Learning.csv' : 'Instructions - DigiFi Machine Learning.rtf';
+  let filename = (req.query.type === 'sample_data') ? 'Sample Data - ClariFI Machine Learning.csv' : 'Instructions - ClariFI Machine Learning.rtf';
   let contenttype = (req.query.type === 'sample_data') ? 'text/csv' : 'application/octet-stream';
   res.set('Content-Type', contenttype);
   res.attachment(filename);
@@ -1794,14 +1794,14 @@ async function getIndustryProviderBatchData(req, res, next) {
   try {
     req.controllerData.batchdata = [];
     if (req.controllerData.mlmodel && req.controllerData.mlmodel.industry) {
-      // for industry specific: order of data download ==> Predictive Data /// Historical Result /// Loan Payment Data /// DigiFi Score /// ADR
+      // for industry specific: order of data download ==> Predictive Data /// Historical Result /// Loan Payment Data /// ClariFI Score /// ADR
       const mlmodel = req.controllerData.mlmodel;
       const industryHeaders = req.controllerData.mlmodel.industry_headers;
       let batch_type = req.params.batch_type;
       req.controllerData.batchdata = {};
       const aws_models = mlmodel.aws_models || [];
-      const digifi_models = mlmodel.digifi_models || [];
-      const all_training_models = [ ...aws_models, ...digifi_models ].length ? [ ...aws_models, ...digifi_models ] : [ 'aws', 'sagemaker_ll', 'sagemaker_xgb' ];
+      const ClariFI_models = mlmodel.ClariFI_models || [];
+      const all_training_models = [ ...aws_models, ...ClariFI_models ].length ? [ ...aws_models, ...ClariFI_models ] : [ 'aws', 'sagemaker_ll', 'sagemaker_xgb' ];
       let success_providers = all_training_models.filter(provider => mlmodel[ provider ] && (mlmodel[ provider ].status === 'complete' || mlmodel[ provider ].status === 'completed'));
       let batchdata = await Promise.all(success_providers.map(provider => FETCH_PROVIDER_BATCH_DATA[ provider ]({ mlmodel, batch_type, provider })));
       batchdata = success_providers.reduce((acc, provider, i) => {
@@ -1829,11 +1829,11 @@ async function getIndustryProviderBatchData(req, res, next) {
         // push in analysis data (loan payment data)
         row.push(...analysisData[rowidx]);
         success_providers.forEach(provider => {
-          row.push(mapPredictionToDigiFiScore(batchdata[ provider ][ rowidx ]));
+          row.push(mapPredictionToClariFIScore(batchdata[ provider ][ rowidx ]));
         });
         success_providers.forEach(provider => {
           if (scoreAnalysisEvaluators[provider]) {
-            const projectedScore = scoreAnalysisEvaluators[provider](mapPredictionToDigiFiScore(batchdata[ provider ][ rowidx ]));
+            const projectedScore = scoreAnalysisEvaluators[provider](mapPredictionToClariFIScore(batchdata[ provider ][ rowidx ]));
             row.push(projectedScore < 0 ? 0 : projectedScore);
           } else row.push(null);
         });
@@ -1859,8 +1859,8 @@ async function getProviderBatchData(req, res, next) {
       const batch_type = req.params.batch_type;
       req.controllerData.batchdata = {};
       const aws_models = mlmodel.aws_models || [];
-      const digifi_models = mlmodel.digifi_models || [];
-      const all_training_models = [ ...aws_models, ...digifi_models ].length ? [ ...aws_models, ...digifi_models ] : [ 'aws', 'sagemaker_ll', 'sagemaker_xgb' ];
+      const ClariFI_models = mlmodel.ClariFI_models || [];
+      const all_training_models = [ ...aws_models, ...ClariFI_models ].length ? [ ...aws_models, ...ClariFI_models ] : [ 'aws', 'sagemaker_ll', 'sagemaker_xgb' ];
       const success_providers = all_training_models.filter(provider => mlmodel[ provider ] && (mlmodel[ provider ].status === 'complete' || mlmodel[ provider ].status === 'completed'));
       let batchdata = await Promise.all(success_providers.map(provider => FETCH_PROVIDER_BATCH_DATA[ provider ]({ mlmodel, batch_type, provider })));
       batchdata = success_providers.reduce((acc, provider, i) => {
@@ -2127,14 +2127,14 @@ async function getChartDownloadData(req, res, next) {
 
       const comparisonScoreConfigs = [{
         title: 'Comparison Score - Predictive Power',
-        headers: ['DigiFi False Positive Rate', 'DigiFi True Positive Rate', 'Comparison Score False Positive Rate', 'Comparison Score True Positive Rate'],
+        headers: ['ClariFI False Positive Rate', 'ClariFI True Positive Rate', 'Comparison Score False Positive Rate', 'Comparison Score True Positive Rate'],
         comparisonScoreInverse: mlmodel.comparison_score_inverse === true,
         outer_value: 'comparison_score_roc',
         predictivePowerTable: true,
       }, {
         title: 'Comparison Score - Average Score',
-        headers: ['Average DigiFi Score', 'Average Comparison Score'],
-        values: ['digifi_score', 'comparison_score'],
+        headers: ['Average ClariFI Score', 'Average Comparison Score'],
+        values: ['ClariFI_score', 'comparison_score'],
         outer_value: 'average_score_rows',
         nestedValues: true,
         granularity: false,
@@ -2142,7 +2142,7 @@ async function getChartDownloadData(req, res, next) {
 
       const projectedAnnualDefaultRateConfigs = [{
         title: 'Projected Annual Default Rate',
-        headers: ['DigiFi Score', 'Projected Annual Default Rate %'],
+        headers: ['ClariFI Score', 'Projected Annual Default Rate %'],
         values: ['adr_projected'],
         granularity: false,
       }]
@@ -2203,7 +2203,7 @@ async function getChartDownloadData(req, res, next) {
       } else {
         handleScoreAnalysis({ scoreData, csvContent, values, headers, title, bins, nestedValues, granularity, time_series, index: Number(query.index), strategy_data_schema, });
       }
-      title = `${title} - ${provider} - ${type} - DigiFi Score`;
+      title = `${title} - ${provider} - ${type} - ClariFI Score`;
     }
     req.controllerData.download_content = csvContent.reduce(__createCSVString, '');
     req.controllerData.doc = {};

@@ -109,7 +109,7 @@ module.exports = {
                             children: 'To manage a data integration, select it from the list on the right.',
                           }, {
                             component: 'p',
-                            children: 'To add additional data integrations please contact DigiFi’s support team.',
+                            children: 'To add additional data integrations please contact ClariFI’s support team.',
                           },
                           ],
                         },
@@ -237,8 +237,8 @@ module.exports = {
             renderOnError: false,
           },
         },
-        checkdigifisupport: {
-          url: '/auth/checkdigifisupport',
+        checkClariFIsupport: {
+          url: '/auth/checkClariFIsupport',
           options: {
             onSuccess: [],
             onError: ['func:this.props.logoutUser', 'func:window.redirect',],

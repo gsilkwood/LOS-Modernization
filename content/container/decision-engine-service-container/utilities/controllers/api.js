@@ -259,7 +259,7 @@ function batchFormatMLResponse(req) {
         ? binary_value :  
         (result.model_type === 'categorical')?
           ai_prediction_value : Number(ai_prediction_value),
-      digifi_score: result.digifi_score || null,
+      ClariFI_score: result.ClariFI_score || null,
     });
     if (req.body.return_input_variables) {
       delete input_variables.model_name;

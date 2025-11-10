@@ -92,7 +92,7 @@
 //                 }, ],
 //                 textContent: [{
 //                   component: 'p',
-//                   children: 'Set up the API request from your systems to DigiFi to run processes in real-time.',
+//                   children: 'Set up the API request from your systems to ClariFI to run processes in real-time.',
 //                 },],
 //                 button: [{
 //                   component: 'ResponsiveButton',
@@ -119,30 +119,30 @@
 //                   externalIcon: true,  
 //                   doubleList: true,
 //                   links: [{
-//                     location: 'https://docs.digifi.io/docs/overview-ti',
+//                     location: 'https://docs.ClariFI.io/docs/overview-ti',
 //                     name: 'Overview of Technical Setup',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/api-response',
+//                     location: 'https://docs.ClariFI.io/docs/api-response',
 //                     name: 'Receiving an API Response',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/data-integrations',
+//                     location: 'https://docs.ClariFI.io/docs/data-integrations',
 //                     name: 'Setting Up Data Integrations',
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/welcome-to-digifi',
+//                     location: 'https://docs.ClariFI.io/docs/welcome-to-ClariFI',
 //                     name: 'View All',
 //                     style: {
 //                       fontWeight: 700,
 //                     },
 //                   }, {
-//                     location: 'https://docs.digifi.io/docs/api-request', 
+//                     location: 'https://docs.ClariFI.io/docs/api-request',
 //                     name: 'Sending an API Request',
 //                   },],
 //                 }, {
-//                   title: 'DigiFi Support',
+//                   title: 'ClariFI Support',
 //                   textContent: [{
 //                     name: 'Phone: 646.663.3392',
 //                   }, {
-//                     name: 'Email: support@digifi.io',
+//                     name: 'Email: support@clarifi.io',
 //                   }, ],
 //                 },
 //                 ]), ],

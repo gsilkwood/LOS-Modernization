@@ -4485,7 +4485,7 @@ async function formatDocuSignTemplates(req) {
     } else {
       req.controllerData._children = [{
         component: 'p',
-        children: 'Please set up your DocuSign integration within Company Settings. If you need assistance, please contact support@digifi.io or (646) 663-3392.',
+        children: 'Please set up your DocuSign integration within Company Settings. If you need assistance, please contact support@clarifi.io or (646) 663-3392.',
       }, {
         component: 'div',
         props: {

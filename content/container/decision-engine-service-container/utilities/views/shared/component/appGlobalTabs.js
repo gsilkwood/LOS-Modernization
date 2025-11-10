@@ -145,7 +145,7 @@ function appGlobalTabs(tabs, tabname, baseURL) {
           props: {
             onClick: 'func:this.props.createModal',
             onclickProps: {
-              title: 'Contact the DigiFi Team',
+              title: 'Contact the ClariFI Team',
               pathname: '/modal/contact',
             },
             style: {

@@ -59,6 +59,9 @@ typings/
 .env
 .development.env
 
+# Build artifacts
+public/build/
+
 .DS_Store
 otherdocs/
 content/config/deployment/ecosystem.json

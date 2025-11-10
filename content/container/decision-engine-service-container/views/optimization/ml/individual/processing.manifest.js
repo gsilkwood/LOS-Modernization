@@ -54,7 +54,7 @@
 //       },
 //       'callbacks': [ 'func:window.globalBarSaveBtn', 'func:window.setHeaders', ],
 //       pageData: {
-//         title: 'DigiFi | Machine Learning',
+//         title: 'ClariFI | Machine Learning',
 //         navLabel: 'Machine Learning',
 //       },
 //       'onFinish': 'render',

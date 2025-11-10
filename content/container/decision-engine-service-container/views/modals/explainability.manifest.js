@@ -38,7 +38,7 @@ module.exports = {
         },
         children: [{
           component: 'p',
-          children: `Digifi's decision explanation is a proprietary approach to explaining decisions produced by highly complex machine learning models. It is based on sophisticated, real-time inference analysis that compares the decision results using your input data and modifications based on the original training data.`,
+          children: `ClariFI's decision explanation is a proprietary approach to explaining decisions produced by highly complex machine learning models. It is based on sophisticated, real-time inference analysis that compares the decision results using your input data and modifications based on the original training data.`,
         }, {
           component: 'p',
           children: 'The decision impacts indicate which fields have the largest positive and negative impacts on the results.',

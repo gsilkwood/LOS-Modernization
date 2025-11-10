@@ -123,7 +123,7 @@ module.exports = {
       callbacks: [],
       onFinish: 'render',
       pageData: {
-        title: 'DigiFi | API Request',
+        title: 'ClariFI | API Request',
         navLabel: 'Company Settings',
       },
     },

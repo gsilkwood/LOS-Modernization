@@ -43,22 +43,22 @@ const mainFunc = async function (req, res, next) {
     // })
     let oneDayEmails = await sendEmail(oneDayUsers, {
       subject: 'DigiFi - Learn More: Common Use Cases & Applications',
-      from: 'DigiFi <support@digifi.io>',
+      from: 'DigiFi <support@clarifi.io>',
       templatename: 'learn_more_use_cases.ejs',
     })
     let threeDayEmails = await sendEmail(threeDayUsers, {
       subject: 'DigiFi - Learn More: The Evolution of Decision Automation',
-      from: 'DigiFi <support@digifi.io>',
+      from: 'DigiFi <support@clarifi.io>',
       templatename: 'learn_more_evolution.ejs',
     })
     // let fiveDayEmails = await sendEmail(fiveDayUsers, {
     //   subject: 'DigiFi - Tutorial: Training Machine Learning',
-    //   from: 'DigiFi <support@digifi.io>',
+    //   from: 'DigiFi <support@clarifi.io>',
     //   templatename: 'tutorial_machine_learning_models.ejs',
     // })
     let sevenDayEmails = await sendEmail(sevenDayUsers, {
       subject: 'DigiFi - Learn More: How AutoML is Leveling the Playing Field',
-      from: 'DigiFi <support@digifi.io>',
+      from: 'DigiFi <support@clarifi.io>',
       templatename: 'learn_more_automl.ejs',
     })
     

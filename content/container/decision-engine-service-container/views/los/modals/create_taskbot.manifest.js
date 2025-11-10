@@ -12,7 +12,7 @@ module.exports = {
         },
         children: [{
           component: 'p',
-          children: 'To add a new task bot, please contact the DigiFi team at support@digifi.io or (646) 663-3392.',
+          children: 'To add a new task bot, please contact the ClariFI team at support@clarifi.io or (646) 663-3392.',
         }, {
           component: 'div',
           props: {

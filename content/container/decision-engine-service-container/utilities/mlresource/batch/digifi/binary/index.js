@@ -20,8 +20,8 @@ async function formatBatchResult(mlmodel, dataset, trainingHistoricalRows, testi
       [`${trainingBatch.provider}.status`]: 'completed',
     } })
     const aws_models = mlmodel.aws_models || [];
-    const digifi_models = mlmodel.digifi_models || [];
-    const all_training_models = [...aws_models, ...digifi_models].length ? [...aws_models, ...digifi_models] : ['aws', 'sagemaker_ll', 'sagemaker_xgb'];
+    const ClariFI_models = mlmodel.ClariFI_models || [];
+    const all_training_models = [...aws_models, ...ClariFI_models].length ? [...aws_models, ...ClariFI_models] : ['aws', 'sagemaker_ll', 'sagemaker_xgb'];
     const progressBarMap = all_training_models.reduce((aggregate, model, i) => {
       aggregate[model] = i;
       return aggregate;

@@ -60,7 +60,7 @@
 //       callbacks: [ 'func:window.globalBarSaveBtn', 'func:window.setHeaders', ],
 //       onFinish: 'render',
 //       pageData: {
-//         title: 'DigiFi | Strategy Activation',
+//         title: 'ClariFI | Strategy Activation',
 //         navLabel: 'Automation Management',
 //       },
 //     },

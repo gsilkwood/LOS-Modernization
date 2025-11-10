@@ -10,10 +10,10 @@ const CoreMailer = periodic.core.mailer;
 const mailerSendEmail = Promisie.promisify(CoreMailer.sendEmail);
 
 let emailTemplateData = {
-  welcome_to_digifi: {
-    subject: 'Welcome to DigiFi’s Loan Origination Platform!',
-    from: 'DigiFi <support@digifi.io>',
-    templatename: 'welcome_to_digifi.ejs',
+  welcome_to_ClariFI: {
+    subject: 'Welcome to ClariFI’s Loan Origination Platform!',
+    from: 'ClariFI <support@clarifi.io>',
+    templatename: 'welcome_to_ClariFI.ejs',
     templatedata: {
       appname: periodic.settings.name,
       hostname: periodic.settings.application.hostname || periodic.settings.name,
@@ -35,8 +35,8 @@ let emailTemplateData = {
     }
   },
   learn_more_use_cases: {
-    subject: 'DigiFi - Learn More: Common Use Cases & Applications',
-    from: 'DigiFi <support@digifi.io>',
+    subject: 'ClariFI - Learn More: Common Use Cases & Applications',
+    from: 'ClariFI <support@clarifi.io>',
     templatename: 'learn_more_use_cases.ejs',
     templatedata: {
       appname: periodic.settings.name,
@@ -47,8 +47,8 @@ let emailTemplateData = {
     }
   },
   learn_more_evolution: {
-    subject: 'DigiFi - Learn More: The Evolution of Decision Automation',
-    from: 'DigiFi <support@digifi.io>',
+    subject: 'ClariFI - Learn More: The Evolution of Decision Automation',
+    from: 'ClariFI <support@clarifi.io>',
     templatename: 'learn_more_evolution.ejs',
     templatedata: {
       appname: periodic.settings.name,
@@ -59,8 +59,8 @@ let emailTemplateData = {
     }
   },
   tutorial_machine_learning_models: {
-    subject: 'DigiFi - Tutorial: Training Machine Learning',
-    from: 'DigiFi <support@digifi.io>',
+    subject: 'ClariFI - Tutorial: Training Machine Learning',
+    from: 'ClariFI <support@clarifi.io>',
     templatename: 'tutorial_machine_learning_models.ejs',
     templatedata: {
       appname: periodic.settings.name,
@@ -71,8 +71,8 @@ let emailTemplateData = {
     }
   },
   learn_more_automl: {
-    subject: 'DigiFi - Learn More: How AutoML is Leveling the Playing Field',
-    from: 'DigiFi <support@digifi.io>',
+    subject: 'ClariFI - Learn More: How AutoML is Leveling the Playing Field',
+    from: 'ClariFI <support@clarifi.io>',
     templatename: 'learn_more_automl.ejs',
     templatedata: {
       appname: periodic.settings.name,

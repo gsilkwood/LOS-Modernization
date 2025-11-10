@@ -68,7 +68,7 @@ module.exports = {
           children: 'Correlations range between 0% and 100% and indicate the strength of the relationship between each predictor variable and the historical result. High correlations signal that the predictor variable greatly influences the result, and vice-versa.',
         }, {
           component: 'p',
-          children: 'The correlations that are displayed are calculated after DigiFi’s automatic data transformations.',
+          children: 'The correlations that are displayed are calculated after ClariFI’s automatic data transformations.',
         }, {
           component: 'div',
           props: {
@@ -141,7 +141,7 @@ module.exports = {
           children: 'If the Data Type is String or Boolean, the “Categorical” column will be checked by default and cannot be edited.',
         }, {
           component: 'p',
-          children: 'If the Data Type is Number, DigiFi analyzes the data to estimate whether the field represents specific categories. You then have the option to adjust this by checking the box.',
+          children: 'If the Data Type is Number, ClariFI analyzes the data to estimate whether the field represents specific categories. You then have the option to adjust this by checking the box.',
         }, {
           component: 'div',
           props: {

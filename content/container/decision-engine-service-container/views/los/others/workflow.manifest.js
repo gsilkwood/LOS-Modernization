@@ -291,7 +291,7 @@ module.exports = {
       callbacks: [ 'func:window.updateGlobalSearchBar', ],
       onFinish: 'render',
       pageData: {
-        title: 'DigiFi | Loan Acquisition Platform',
+        title: 'ClariFI | Loan Acquisition Platform',
         navLabel: 'Loan Acquisition Platform',
       },
     },

@@ -25,7 +25,7 @@ module.exports = {
       callbacks: [],
       'onFinish': 'render',
       'pageData': {
-        'title': 'DigiFi | Reset Password',
+        'title': 'ClariFI | Reset Password',
         'navLabel': 'Reset Password',
       },
     },
@@ -51,7 +51,7 @@ module.exports = {
       callbacks: [],
       'onFinish': 'render',
       'pageData': {
-        'title': 'DigiFi | Start Your Free Trial',
+        'title': 'ClariFI | Start Your Free Trial',
         'navLabel': 'Start Your Free Trial',
       },
     },
@@ -71,7 +71,7 @@ module.exports = {
       callbacks: [],
       'onFinish': 'render',
       'pageData': {
-        'title': 'DigiFi | Reset Password',
+        'title': 'ClariFI | Reset Password',
         'navLabel': 'Reset Password',
       },
     },
@@ -91,7 +91,7 @@ module.exports = {
       callbacks: [],
       'onFinish': 'render',
       'pageData': {
-        'title': 'DigiFi | Recover Organization',
+        'title': 'ClariFI | Recover Organization',
         'navLabel': 'Recover Organization',
       },
     },
@@ -110,7 +110,7 @@ module.exports = {
       callbacks: [],
       'onFinish': 'render',
       'pageData': {
-        'title': 'DigiFi | Sign In',
+        'title': 'ClariFI | Sign In',
         'navLabel': 'Sign In',
       },
     },
@@ -129,7 +129,7 @@ module.exports = {
     //   callbacks: [],
     //   'onFinish': 'render',
     //   'pageData': {
-    //     'title': 'DigiFi | Sign In',
+    //     'title': 'ClariFI | Sign In',
     //     'navLabel': 'Sign In',
     //   },
     // },
@@ -156,7 +156,7 @@ module.exports = {
       callbacks: [],
       'onFinish': 'render',
       'pageData': {
-        'title': 'DigiFi | Sign In',
+        'title': 'ClariFI | Sign In',
         'navLabel': 'Sign In',
       },
     },

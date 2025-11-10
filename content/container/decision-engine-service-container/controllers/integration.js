@@ -670,7 +670,7 @@ async function uploadSecurityCert(req, res, next) {
         'Cache-Control': 'private, max-age=86400',
         'Content-Type': mimetype,
         'x-amz-meta-Cache-Control': 'private, max-age=86400',
-        'x-amz-grant-read': 'uri="des-dev.digifi.cc"',
+        'x-amz-grant-read': 'uri="des-dev.ClariFI.cc"',
       },
     });
     uploadStream.on('error', (e) => {

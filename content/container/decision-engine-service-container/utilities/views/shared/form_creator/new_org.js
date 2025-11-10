@@ -376,7 +376,7 @@ function consentBox() {
             children: [{
               component: 'a',
               props: {
-                href: 'https://digifi.io/legal/terms-and-conditions',
+                href: 'https://ClariFI.io/legal/terms-and-conditions',
                 target: '_blank',
                 style: {
                   textDecoration: 'none',
@@ -389,7 +389,7 @@ function consentBox() {
             }, {
               component: 'a',
               props: {
-                href: 'https://digifi.io/legal/website-terms-of-service',
+                href: 'https://ClariFI.io/legal/website-terms-of-service',
                 target: '_blank',
                 style: {
                   textDecoration: 'none',
@@ -402,7 +402,7 @@ function consentBox() {
             }, {
               component: 'a',
               props: {
-                href: 'https://digifi.io/legal/privacy-policy',
+                href: 'https://ClariFI.io/legal/privacy-policy',
                 target: '_blank',
                 style: {
                   textDecoration: 'none',

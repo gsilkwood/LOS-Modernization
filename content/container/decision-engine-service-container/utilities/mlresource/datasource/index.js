@@ -5,7 +5,7 @@ const streamBuffers = require('stream-buffers');
 const aws = require('./aws');
 const sagemaker_ll = require('./sagemaker_ll');
 const sagemaker_xgb = require('./sagemaker_xgb');
-const digifi = require('./digifi');
+const ClariFI = require('./ClariFI');
 
 function oneHotEncode(column, columnType) {
   let encoder = new Map();
@@ -71,7 +71,7 @@ function __createCSVString(aggregate, rowArray) {
 
 module.exports = {
   aws,
-  digifi,
+  ClariFI,
   sagemaker_ll,
   sagemaker_xgb,
   oneHotEncode,

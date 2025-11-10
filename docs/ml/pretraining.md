@@ -41,7 +41,7 @@ The third step is to provide historical data. CSV files allow for up to 100MB fi
 - If the model is industry-specific, an industry data file will also be created and stored as a file object split into chunks, using mongo's GridFS solution
 - The associated mlmodel is then updated with the ObjectId of the newly created `datasource mongo document` (`uploadIndustryInputFile`)
 - Finally, the datasource data is transposed so that each predictor_column can be analyzed against the historical data. The purpose of this step is to generate basic statistical values on each column and produce regression functions that will then be used to transform each data column into better suited data for training the model
-  - The [MLJS](https://www.npmjs.com/package/ml) library is leveraged for some of its simple `Regression` functions. In other cases, DigiFi's own implementations of well-known statistical tests are used to generate correlation coefficients and values:
+  - The [MLJS](https://www.npmjs.com/package/ml) library is leveraged for some of its simple `Regression` functions. In other cases, ClariFI's own implementations of well-known statistical tests are used to generate correlation coefficients and values:
   - For `Binary`  models (models in which the historical_result is true or false), the following regression tests are run:
     - `Number` predictor variable vs. `historical_result`: MLJS - Simple Linear Regression, Polynomial Regression (2nd - 5th degree), Power Regression, Exponential Regression
     - `Binary` predictor variable vs. `historical_result`: MLJS - Simple Linear Regression, Polynomial Regression (2nd - 5th degree), Power Regression, Exponential Regression
@@ -199,6 +199,6 @@ await hmsetAsync(`${periodic.environment}_ml_preprocessing:${mlmodel._id.toStrin
 });
 ```
 
-- The `trainProviderModels` ml controller function also updates the `mlmodel mongo document` with the `aws_models` and `digifi_models` that will be trained during the training process. These models are set in the `decision-engine-service-container configuration` in the `config.settings.machinelearning.providers` (AWS models) and `config.settings.machinelearning.digifi_models` (DigiFi models) fields.
+- The `trainProviderModels` ml controller function also updates the `mlmodel mongo document` with the `aws_models` and `ClariFI_models` that will be trained during the training process. These models are set in the `decision-engine-service-container configuration` in the `config.settings.machinelearning.providers` (AWS models) and `config.settings.machinelearning.ClariFI_models` (ClariFI models) fields.
 - This Redis Key is retrieved in a cron (setInterval that runs every minute beginning from appStart). This kicks off the data preprocessing process, which is the first step in the automated pipeline of training an mlmodel.
 - NOTE: The `model training process` for a specified mlmodel does not begin until the mlmodel training cron picks it up. This is further discussed in the [Machine Learning Model Training Section](./training.md).

@@ -20,7 +20,7 @@ module.exports = {
         },
       },
       'pageData': {
-        'title': 'DigiFi | Account',
+        'title': 'ClariFI | Account',
         'navLabel': 'Account',
       },
       'onFinish': 'render',

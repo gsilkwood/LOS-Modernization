@@ -35,12 +35,12 @@ function openDownloadStreamAsync(bucket, file_id) {
   });
 }
 
-async function runDigifiBatchPredictions(mlmodel) {
+async function runClariFIBatchPredictions(mlmodel) {
   try {
     const MlDataset = periodic.datas.get('standard_mldataset');
     const BatchPrediction = periodic.datas.get('standard_batchprediction');
     const model_type = mlmodel.type;
-    const providers = THEMESETTINGS.machinelearning.digifi_models[model_type];
+    const providers = THEMESETTINGS.machinelearning.ClariFI_models[model_type];
     const dataset = await MlDataset.model.findOne({ mlmodel: mlmodel._id.toString(), }).lean();
     let [trainingHistoricalRows, testingHistoricalRows] = await Promise.all([openDownloadStreamAsync(periodic.gridfs.bucket, dataset.training.historical_result), openDownloadStreamAsync(periodic.gridfs.bucket, dataset.testing.historical_result)]);
     trainingHistoricalRows = trainingHistoricalRows.map((row) => row.map(el => Number(el)))[0];
@@ -58,4 +58,4 @@ async function runDigifiBatchPredictions(mlmodel) {
 }
 
 
-module.exports = runDigifiBatchPredictions;
+module.exports = runClariFIBatchPredictions;

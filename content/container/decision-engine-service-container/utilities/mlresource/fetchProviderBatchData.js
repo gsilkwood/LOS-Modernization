@@ -185,7 +185,7 @@ function sagemaker_xgb({ mlmodel, batch_type, }) {
   });
 }
 
-function digifi({ mlmodel, batch_type, provider }) {
+function ClariFI({ mlmodel, batch_type, provider }) {
   return new Promise(async (resolve, reject) => {
     try {
       let { datasource } = mlmodel;
@@ -228,7 +228,7 @@ module.exports = {
   original,
   sagemaker_ll,
   sagemaker_xgb,
-  neural_network: digifi,
-  decision_tree: digifi,
-  random_forest: digifi,
+  neural_network: ClariFI,
+  decision_tree: ClariFI,
+  random_forest: ClariFI,
 };

@@ -2,10 +2,10 @@
 
 const sagemaker_ll = require('./sagemaker_ll');
 const sagemaker_xgb = require('./sagemaker_xgb');
-const digifi = require('./digifi');
+const ClariFI = require('./ClariFI');
 
 module.exports = {
-  digifi,
+  ClariFI,
   sagemaker_ll,
   sagemaker_xgb,
 };

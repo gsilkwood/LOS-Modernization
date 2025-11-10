@@ -401,14 +401,14 @@ async function runDocuSign(req, res, next) {
     const client = populatedOrg.association.client;
     const client_configs = `client_id=${client.client_id}&client_public_key=${client.public_key}&client_secret=${client.client_secret}`;
     // const hostNameMap = {
-    //   'cloud': 'cloud.digifi.io',
-    //   'development': 'des-development.digifi.cc'
+    //   'cloud': 'cloud.ClariFI.io',
+    //   'development': 'des-development.ClariFI.cc'
     // }
     // console.log({ client_configs });
     // console.log({ environment: periodic.environment });
     const webhook_url = (periodic.environment === 'cloud')
-      ? `https://cloud.digifi.io/api/v2/docusign/${parsed[ 2 ]}?${client_configs}&user_id=${user._id.toString()}`
-      : `https://des-development.digifi.cc/api/v2/docusign/${parsed[ 2 ]}?${client_configs}&user_id=${user._id.toString()}`;
+      ? `https://cloud.ClariFI.io/api/v2/docusign/${parsed[ 2 ]}?${client_configs}&user_id=${user._id.toString()}`
+      : `https://des-development.ClariFI.cc/api/v2/docusign/${parsed[ 2 ]}?${client_configs}&user_id=${user._id.toString()}`;
     // console.log({ webhook_url });
     const templateOptions = {
       templateId: req.params.id,
@@ -419,7 +419,7 @@ async function runDocuSign(req, res, next) {
       ccEmail: templateFields.ccEmail,
       custom_fields: templateFields.tab,
       webhook_url
-      // webhook_url: 'https://des-development.digifi.cc/api/v2/test',
+      // webhook_url: 'https://des-development.ClariFI.cc/api/v2/test',
     };
     docuSignInstance.sendTemplate(templateOptions);
     next();

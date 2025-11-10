@@ -50,7 +50,7 @@ module.exports = {
           },
         }, {
           component: 'span',
-          children: `, welcome to the ${THEMESETTINGS.company_name || 'Digifi'} Platform!`,
+          children: `, welcome to the ${THEMESETTINGS.company_name || 'ClariFI'} Platform!`,
         }, 
         ],
       },
@@ -79,36 +79,36 @@ module.exports = {
           externalIcon: true,
           doubleList: true,
           links: [{
-            location: 'https://docs.digifi.io/docs/los-key-features',
+            location: 'https://docs.ClariFI.io/docs/los-key-features',
             name: 'Key Features',
           }, {
-            location: 'https://docs.digifi.io/docs/lending-crm',
+            location: 'https://docs.ClariFI.io/docs/lending-crm',
             name: 'Lending CRM Guide',
           }, {
-            location: 'https://docs.digifi.io/docs/decision-engine',
+            location: 'https://docs.ClariFI.io/docs/decision-engine',
             name: 'Decision Engine Guide',
           }, {
-            location: 'https://docs.digifi.io/docs/ml-models',
+            location: 'https://docs.ClariFI.io/docs/ml-models',
             name: 'Machine Learning Guide',
           }, {
-            location: 'https://docs.digifi.io/docs/overview-of-text-recognition',
+            location: 'https://docs.ClariFI.io/docs/overview-of-text-recognition',
             name: 'OCR Text Recognition Guide',
           }, {
-            location: 'https://docs.digifi.io/reference',
+            location: 'https://docs.ClariFI.io/reference',
             name: 'API Reference',
           }, {
-            location: 'https://docs.digifi.io/docs',
+            location: 'https://docs.ClariFI.io/docs',
             name: 'View All',
             style: {
               fontWeight: 700,
             },
           },],
         }, {
-          title: 'DigiFi Support',
+          title: 'ClariFI Support',
           textContent: [{
             name: 'Phone: 646.663.3392',
           }, {
-            name: 'Email: support@digifi.io',
+            name: 'Email: support@clarifi.io',
           },],
         },
         ]),],

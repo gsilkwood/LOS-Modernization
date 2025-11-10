@@ -28,7 +28,7 @@ function openDownloadStreamAsync(bucket, file_id) {
   });
 }
 
-function mapPredictionToDigiFiScore(prediction) {
+function mapPredictionToClariFIScore(prediction) {
   switch (true) {
     case (prediction < 0.002):
       return 850;
@@ -149,5 +149,5 @@ function mapPredictionToDigiFiScore(prediction) {
 
 module.exports = {
   openDownloadStreamAsync,
-  mapPredictionToDigiFiScore,
+  mapPredictionToClariFIScore,
 }

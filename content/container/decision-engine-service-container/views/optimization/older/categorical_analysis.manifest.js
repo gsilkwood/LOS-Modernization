@@ -174,7 +174,7 @@
 //       ],
 //       onFinish: 'render',
 //       pageData: {
-//         title: 'DigiFi | Artificial Intelligence',
+//         title: 'ClariFI | Artificial Intelligence',
 //         navLabel: 'Artificial Intelligence',
 //       },
 //     },

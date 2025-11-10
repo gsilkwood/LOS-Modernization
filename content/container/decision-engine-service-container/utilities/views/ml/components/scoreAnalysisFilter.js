@@ -32,10 +32,10 @@ function _getDataSourceTypeFilter({ configuration, query }) {
 function _getProviderFilter({ configuration, data, modeldata, formdata, params, query, }) {
   // let providers = [ 'aws', 'sagemaker_ll', 'sagemaker_xgb'];
   let aws_models = modeldata.aws_models || [];
-  let digifi_models = modeldata.digifi_models || [];
+  let ClariFI_models = modeldata.ClariFI_models || [];
   aws_models = aws_models.filter(model_name => model_name !== modeldata.selected_provider);
-  digifi_models = digifi_models.filter(model_name => model_name !== modeldata.selected_provider);
-  const all_training_models = [ modeldata.selected_provider, ...aws_models, ...digifi_models, ].length ? [ modeldata.selected_provider, ...aws_models, ...digifi_models, ] : [ 'aws', 'sagemaker_ll', 'sagemaker_xgb', ];
+  ClariFI_models = ClariFI_models.filter(model_name => model_name !== modeldata.selected_provider);
+  const all_training_models = [ modeldata.selected_provider, ...aws_models, ...ClariFI_models, ].length ? [ modeldata.selected_provider, ...aws_models, ...ClariFI_models, ] : [ 'aws', 'sagemaker_ll', 'sagemaker_xgb', ];
   // const providers = all_training_models.filter(model_name => modeldata[ model_name ] && (modeldata[ model_name ].status === 'complete' || modeldata[ model_name ].status === 'completed'));
   return {
     component: 'Semantic.Dropdown',

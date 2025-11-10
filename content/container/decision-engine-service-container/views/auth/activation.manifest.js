@@ -180,7 +180,7 @@ module.exports = {
                           operation: 'eq',
                           right: false,
                         },],
-                        children: 'We will contact you shortly to activate your account. You may also reach out to us at support@digifi.io or (646) 663-3392.',
+                        children: 'We will contact you shortly to activate your account. You may also reach out to us at support@clarifi.io or (646) 663-3392.',
                       },
                       {
                         component: 'br',
@@ -249,7 +249,7 @@ module.exports = {
                           operation: 'eq',
                           right: false,
                         },],
-                        children: 'If you’re having issues verifying your email, please be sure to check your junk email folder. If you need assistance, contact us at support@digifi.io or (646) 663-3392.',
+                        children: 'If you’re having issues verifying your email, please be sure to check your junk email folder. If you need assistance, contact us at support@clarifi.io or (646) 663-3392.',
                       },
                       {
                         component: 'br',

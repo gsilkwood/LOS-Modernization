@@ -51,7 +51,7 @@ let radioButtonGroup = [
     value: 'artificialintelligence',
     icon: styles.moduleIcons[ 'artificialintelligence' ],
     title: 'Machine Learning',
-    subtext: 'Runs a model from DigiFi Machine Learning',
+    subtext: 'Runs a model from ClariFI Machine Learning',
   },
   // {
   //   name: 'type',

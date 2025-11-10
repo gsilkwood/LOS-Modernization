@@ -12,8 +12,8 @@ if (machineLearningSettings.use_mlcrons) {
   // AWS Sagemaker training cron
   mlcrons.sageMaker();
 
-  // DigiFi models training cron
-  mlcrons.digifi();
+  // ClariFI models training cron
+  mlcrons.ClariFI();
 
   // Cron that updates the "selected_provider" on an mlmodel once the realtime endpoint is ready (AWS SAGEMAKER AND AWS LINEAR LEARNER ONLY)
   mlcrons.modelSelectionUpdater();
@@ -91,7 +91,7 @@ if (machineLearningSettings.use_mlcrons) {
 - Redis is used to maintain the status/stage of the training process. It is also used to update important mongo_ids and keys throughout the process. The general process of training runs in the following major steps:
 
 #### Step 1: Data preprocessing
-This step takes the original csv data that is stored in S3 and applies data type coercion, `transformations` functions, oneHotEncoding, and data normalization to create a unique data set for each algorithm that is run for the specified machine learning model. These datasets are then uploaded to S3 (for AWS models) or saved into the `mldatasets` collection (for DigiFi models).
+This step takes the original csv data that is stored in S3 and applies data type coercion, `transformations` functions, oneHotEncoding, and data normalization to create a unique data set for each algorithm that is run for the specified machine learning model. These datasets are then uploaded to S3 (for AWS models) or saved into the `mldatasets` collection (for ClariFI models).
   - The code that initializes this process is in the index.js file of the decision-engine-service container as shown below: 
   ```
   setInterval(async () => {
@@ -185,13 +185,13 @@ This step takes the original csv data that is stored in S3 and applies data type
         updatedat: new Date(),
       });
       let providers = THEMESETTINGS.machinelearning.providers;
-      let digifi_models = THEMESETTINGS.machinelearning.digifi_models[mongo_mlmodel.type] || [];
+      let ClariFI_models = THEMESETTINGS.machinelearning.ClariFI_models[mongo_mlmodel.type] || [];
       providers.forEach(provider => {
         PROVIDER_DATASOURCE_FUNCS[provider]({ mlmodel, headers: included_headers, training_data_transposed, testing_data_transposed, columnTypes, });
         helpers.mlAutoProgress({ provider, model_id: mlmodel._id.toString(), interval: auto_progress_configs[provider].interval, organization: mlmodel.organization.toString(), max_progress: auto_progress_configs[provider].max_progress, });
       });
-      PROVIDER_DATASOURCE_FUNCS['digifi']({ mlmodel, headers: included_headers, training_data_transposed, testing_data_transposed, columnTypes, });
-      digifi_models.forEach(provider => {
+      PROVIDER_DATASOURCE_FUNCS['ClariFI']({ mlmodel, headers: included_headers, training_data_transposed, testing_data_transposed, columnTypes, });
+      ClariFI_models.forEach(provider => {
         helpers.mlAutoProgress({ provider, model_id: mlmodel._id.toString(), interval: auto_progress_configs[provider].interval, organization: mlmodel.organization.toString(), max_progress: auto_progress_configs[provider].max_progress, progress_value: auto_progress_configs[provider].progress_value });
       });
     } catch(e){
@@ -214,28 +214,28 @@ This step takes the original csv data that is stored in S3 and applies data type
   let { decoders, encoders, encoder_counts,} = createHotEncodeMap({ csv_headers: included_headers, training_data_transposed, columnTypes,});
   ```
 
-  - After creating the encodingMap for each column_header of the original training dataset, the active AWS and DigiFi provider algorithms are identified from the configuration file and their unique scripts are run to type coerce each cell to the proper data type, oneHotEncode `String` and `Boolean` values according to the encoders map created previously, and then transformed using the `datasource.transformations` functions for each column if the function exists. The functions that kick off the process are from the above file and can be seen here: 
+  - After creating the encodingMap for each column_header of the original training dataset, the active AWS and ClariFI provider algorithms are identified from the configuration file and their unique scripts are run to type coerce each cell to the proper data type, oneHotEncode `String` and `Boolean` values according to the encoders map created previously, and then transformed using the `datasource.transformations` functions for each column if the function exists. The functions that kick off the process are from the above file and can be seen here:
 
   ```
   let providers = THEMESETTINGS.machinelearning.providers;
-  let digifi_models = THEMESETTINGS.machinelearning.digifi_models[mongo_mlmodel.type] || [];
+  let ClariFI_models = THEMESETTINGS.machinelearning.ClariFI_models[mongo_mlmodel.type] || [];
   providers.forEach(provider => {
     PROVIDER_DATASOURCE_FUNCS[provider]({ mlmodel, headers: included_headers, training_data_transposed, testing_data_transposed, columnTypes, });
     helpers.mlAutoProgress({ provider, model_id: mlmodel._id.toString(), interval: auto_progress_configs[provider].interval, organization: mlmodel.organization.toString(), max_progress: auto_progress_configs[provider].max_progress, });
   });
-  PROVIDER_DATASOURCE_FUNCS['digifi']({ mlmodel, headers: included_headers, training_data_transposed, testing_data_transposed, columnTypes, });
-  digifi_models.forEach(provider => {
+  PROVIDER_DATASOURCE_FUNCS['ClariFI']({ mlmodel, headers: included_headers, training_data_transposed, testing_data_transposed, columnTypes, });
+  ClariFI_models.forEach(provider => {
     helpers.mlAutoProgress({ provider, model_id: mlmodel._id.toString(), interval: auto_progress_configs[provider].interval, organization: mlmodel.organization.toString(), max_progress: auto_progress_configs[provider].max_progress, progress_value: auto_progress_configs[provider].progress_value });
   });
   ```
   - The `helpers.mlAutoProgress` is a setInterval that runs for each provider to emit updates to the interface's progress bars through websockets. 
   - The individual data transformation script files can be found in `content/container/decision-engine-service-container/utilities/mlresource/datasource`.
-  - Once data preprocessing is complete, files are saved into mongodb (`mldatasets` collection for DigiFi models) and AWS S3 (for AWS models), and the `datasource mongo document` is updated with these new file locations. Also, Redis is updated with new keys to allow for the other crons from the `index.js` file to know that training for the `AWS` and `DigiFi` models is ready.
+  - Once data preprocessing is complete, files are saved into mongodb (`mldatasets` collection for ClariFI models) and AWS S3 (for AWS models), and the `datasource mongo document` is updated with these new file locations. Also, Redis is updated with new keys to allow for the other crons from the `index.js` file to know that training for the `AWS` and `ClariFI` models is ready.
   - Each `mlmodel mongo document` contains a key of the algorithm name pointing to the details of each algorithm (model configurations, batch_testing_id, batch_training_id, etc)
   - Each `datasource mongo document` contains a providers object that contains a key of each of the algorithm names pointing to an object that contains datasource details (headers array, testing file location details, training file location details, batch training file location details).
 #### Step 2: Model Training
 - For AWS models model training is run on AWS servers, achieved through API calls using the node [AWS ML Node SDK](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/MachineLearning.html) (AWS Machine Learning) and the node [AWS Sagemaker Node SDK](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/SageMaker.html) (AWS Linear Learner and AWS XGB).
-- For DigiFi models, model training is done on DigiFi servers.
+- For ClariFI models, model training is done on ClariFI servers.
 
 The code that initializes this process can be found in the `index.js` file of the `decision-engine-service-container` and is as follows:
 
@@ -243,8 +243,8 @@ The code that initializes this process can be found in the `index.js` file of th
   // AWS Sagemaker training cron
   mlcrons.sageMaker();
 
-  // DigiFi models training cron
-  mlcrons.digifi();
+  // ClariFI models training cron
+  mlcrons.ClariFI();
 
   /* AWS ML training cron (Should organize this better eventually like the above training crons) */
   setInterval(() => {
@@ -293,7 +293,7 @@ The code that initializes this process can be found in the `index.js` file of th
   }, machineLearningSettings.cron_interval || 60000);
 ```
 
-- Note: AWS Sagemaker, DigiFi, and AWS ML all run on separate crons.
+- Note: AWS Sagemaker, ClariFI, and AWS ML all run on separate crons.
 - These three crons will run every 60s (or if a cron_interval is set, it will run at the rate of the cron_interval), and it will pick up any redisKeys that are at the training step (which means the previous datasource preprocessing step has completed). 
 - Each cron will pick up one model at a time and queue them into their current stage of training. These training steps can be found in `decision-engine-service-container/utilities/mlcrons`.
 
@@ -322,15 +322,15 @@ mlcrons.batchUpdater({ s3, machinelearning, });
 mlcrons.modelUpdater();
 ```
 
-- `DigiFi models` have their own folder of cron functions as well, located in `decision-engine-service-container/utilities/mlcrons/digifi`. Since DigiFi models have to run on the server and Node is not great for compute-intensive work, the `worker-threads` module of Node (available on version 11+) is leveraged to run models in parallel on a node server that is spawned on each CPU available. 
-  - Because of the use of the `worker-threads` module, script files of the algorithm training processes are saved into the `content/files/digifi_model_scripts` locations for each of the available model types `binary, categorical and regression`. These scripts are accessed by each worker thread that is spawned and passed in data that is required for training a model on each respective algorithm.
+- `ClariFI models` have their own folder of cron functions as well, located in `decision-engine-service-container/utilities/mlcrons/ClariFI`. Since ClariFI models have to run on the server and Node is not great for compute-intensive work, the `worker-threads` module of Node (available on version 11+) is leveraged to run models in parallel on a node server that is spawned on each CPU available.
+  - Because of the use of the `worker-threads` module, script files of the algorithm training processes are saved into the `content/files/ClariFI_model_scripts` locations for each of the available model types `binary, categorical and regression`. These scripts are accessed by each worker thread that is spawned and passed in data that is required for training a model on each respective algorithm.
   - During training, each of these `worker-threads` runs one of each of the scripts of the current model (based on its model type) and trains the models in parallel without blocking the main node thread. Once training is complete for all algorithms, the mlmodel is updated and moved onto the next phase of the training process.
-  - Since `DigiFi models` are trained `synchronously` using open source libraries available in npm modules, Redis is not necessary and thus is not used to manage training statuses. 
-  - DigiFi `mlmodel mongo documents` are updated directly and are queried based on mongoID to progress the models to their next phases.
+  - Since `ClariFI models` are trained `synchronously` using open source libraries available in npm modules, Redis is not necessary and thus is not used to manage training statuses.
+  - ClariFI `mlmodel mongo documents` are updated directly and are queried based on mongoID to progress the models to their next phases.
   - After model training, batch prediction cases are created and stored through GridFS , and then the batch analysis is run.
 
 #### Step 2A: Industry-Specific input analysis and score analysis creation
-Industry specific models (currently only lending is available) allow for a larger dataset to be uploaded (with specified column_headers). In addition to the model being trained (currently only as a binary model), a series of input_analysis and score_analysis calculations will be performed to produce the `Input Data Analysis` and `DigiFi Score Analysis` charts that can be viewed by an end user. 
+Industry specific models (currently only lending is available) allow for a larger dataset to be uploaded (with specified column_headers). In addition to the model being trained (currently only as a binary model), a series of input_analysis and score_analysis calculations will be performed to produce the `Input Data Analysis` and `ClariFI Score Analysis` charts that can be viewed by an end user.
 
 ##### What is an Input Data Analysis?
 - Generates industry-specific statistics and distributions that may be more useful than the generic statistical charts that are provided in the `Model Evaluation` charts (ROC, KS-Curve etc...)
@@ -345,35 +345,35 @@ Industry specific models (currently only lending is available) allow for a large
   - Annual Yield (bucketed by each predictor variable)
   - Time Series By Count (bucketed by each predictor variable)
   - Time Series By Amount (bucketed by each predictor variable)
-##### What is a DigiFi Score Analysis?
-- Generates distributions after mapping the results of each batch prediction set (training and testing) to a `DigiFi Score`. `DigiFi Scores` (which currently range from 300 - 850) are generally the x-axis on these analysis charts and provide a means for replacing a score value (e.g. FICO Score) to show the performance of a model on the historical data provided. A comparison_score column can also be added to the dataset, allowing for a comparison of the Average Score and ROC curves that are produced by the `comparison_score` and the `DigiFi Score`. 
+##### What is a ClariFI Score Analysis?
+- Generates distributions after mapping the results of each batch prediction set (training and testing) to a `ClariFI Score`. `ClariFI Scores` (which currently range from 300 - 850) are generally the x-axis on these analysis charts and provide a means for replacing a score value (e.g. FICO Score) to show the performance of a model on the historical data provided. A comparison_score column can also be added to the dataset, allowing for a comparison of the Average Score and ROC curves that are produced by the `comparison_score` and the `ClariFI Score`.
 - For example, in the lending case, the following charts are available:
-  - Loan Volume by count (bucketed by each DigiFi Score [300 - 850])
-  - Loan Volume by amount (bucketed by each DigiFi Score [300 - 850])
-  - Annual Default Rate (bucketed by each DigiFi Score [300 - 850])
-  - Cumulative Default Rate By Count (bucketed by each DigiFi Score [300 - 850])
-  - Cumulative Default Rate By Amount (bucketed by each DigiFi Score [300 - 850])
-  - Time Series By Count (bucketed by each DigiFi Score [300 - 850])
-  - Time Series By Amount (bucketed by each DigiFi Score [300 - 850])
-  - Model Drivers (A chart that displays the average of each predictor value (or the counts of each predictor value for non numeric values) bucketed by each DigiFi Score [300 - 850])
-  - Predictive Power (A chart comparison of the ROC curve of the `comparison_score` vs. ROC curve of DigiFi Score)
-  - Average Score (A chart comparison of the average `comparison_score` bucketed by each DigiFi Score [300 - 850])
-  - Projected Annual Default Rate (A projection chart displaying Projected ADR vs. DigiFi Score).
+  - Loan Volume by count (bucketed by each ClariFI Score [300 - 850])
+  - Loan Volume by amount (bucketed by each ClariFI Score [300 - 850])
+  - Annual Default Rate (bucketed by each ClariFI Score [300 - 850])
+  - Cumulative Default Rate By Count (bucketed by each ClariFI Score [300 - 850])
+  - Cumulative Default Rate By Amount (bucketed by each ClariFI Score [300 - 850])
+  - Time Series By Count (bucketed by each ClariFI Score [300 - 850])
+  - Time Series By Amount (bucketed by each ClariFI Score [300 - 850])
+  - Model Drivers (A chart that displays the average of each predictor value (or the counts of each predictor value for non numeric values) bucketed by each ClariFI Score [300 - 850])
+  - Predictive Power (A chart comparison of the ROC curve of the `comparison_score` vs. ROC curve of ClariFI Score)
+  - Average Score (A chart comparison of the average `comparison_score` bucketed by each ClariFI Score [300 - 850])
+  - Projected Annual Default Rate (A projection chart displaying Projected ADR vs. ClariFI Score).
 
 The key differences between a generic model training process versus an industry-specific one are as follows:
 - 1.) When a dataset is uploaded through the interface, the data in the columns of specified header names will be saved into the `fs.files` collection as a collection of `fs.chunks` (This is simply a result of using GridFS to upload data). 
-- 2.) The data in the `fs.files` and `fs.chunks` will be pulled and processed through the `input_analysis` cron, which can be found in the `decision-engine-service-container/utilities/mlcrons/digifi/index.js` file as shown here:
+- 2.) The data in the `fs.files` and `fs.chunks` will be pulled and processed through the `input_analysis` cron, which can be found in the `decision-engine-service-container/utilities/mlcrons/ClariFI/index.js` file as shown here:
 
 ```
 let input_running = false;
 setInterval(async (options) => {
   if (!input_running) {
-    let inputMlModels = await MLModel.model.find({ digifi_model_status: 'input_analysis' }).lean();
+    let inputMlModels = await MLModel.model.find({ ClariFI_model_status: 'input_analysis' }).lean();
     if (inputMlModels) {
       input_running = true;
       await Promise.all(inputMlModels.map(async mlmodel => {
         await mlResource.input_analysis(mlmodel);
-        await MLModel.update({ isPatch: true, id: mlmodel._id.toString(), updatedoc: { digifi_model_status: 'score_analysis' } });
+        await MLModel.update({ isPatch: true, id: mlmodel._id.toString(), updatedoc: { ClariFI_model_status: 'score_analysis' } });
       }));
     }
     input_running = false;
@@ -382,9 +382,9 @@ setInterval(async (options) => {
 ```
 
 - 3.) The `mlResource.input_analysis` function will run a series of calculations to generate data that can be viewed in the `Input Analyis` section. After the `mlResource.input_analysis` function is complete, it will create an `inputanalysis mongo document` in the `inputanalyses` collection.  (E.g. a model with aws, sagemaker_ll, sagemaker_xgb, neural_network, decision_tree would have a total of 1 input analysis documents (2 for each)).
-- Note: The input analysis function is run only once (AND ONLY DURING THE DIGIFI MODEL TRAINING PROCESS), and thus there is only one input analysis document for each mlmodel document that is trained.
+- Note: The input analysis function is run only once (AND ONLY DURING THE ClariFI MODEL TRAINING PROCESS), and thus there is only one input analysis document for each mlmodel document that is trained.
 
-- 4.) For the `DigiFi Score Analysis`, a training `score analysis document` and testing `score analysis document` is created for EACH ALGORITHM that is run for an `mlmodel document`. (E.g. a model with `aws`, `sagemaker_ll`, `sagemaker_xgb`, `neural_network`, `decision_tree` would have a total of 10 score analysis documents (2 for each)).
+- 4.) For the `ClariFI Score Analysis`, a training `score analysis document` and testing `score analysis document` is created for EACH ALGORITHM that is run for an `mlmodel document`. (E.g. a model with `aws`, `sagemaker_ll`, `sagemaker_xgb`, `neural_network`, `decision_tree` would have a total of 10 score analysis documents (2 for each)).
 - 5.) The score analysis is run before the batch analysis phase in each of the cron processes for each algorithm. This is only done if `industry` exists.
 
 As a final step, the overallModelUpdater runs to flip an `mlmodel` that has all of its respective algorithm statuses set to `complete` or `completed`. The cron for this is also in the `index.js` file of the `decision-engine-service` container as shown below:

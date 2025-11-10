@@ -241,8 +241,8 @@ module.exports = {
             renderOnError: false,
           },
         },
-        checkdigifisupport: {
-          url: '/auth/checkdigifisupport',
+        checkClariFIsupport: {
+          url: '/auth/checkClariFIsupport',
           options: {
             onSuccess: [],
             onError: ['func:this.props.logoutUser', 'func:window.redirect',],

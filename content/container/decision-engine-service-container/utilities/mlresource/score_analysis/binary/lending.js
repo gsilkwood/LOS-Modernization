@@ -3,9 +3,9 @@ const periodic = require('periodicjs');
 // const { formatBinaryBatchResult } = require('../helper');
 const logger = periodic.logger;
 const { generate_linear_function_evaluator, generate_polynomial_function_evaluator, generate_power_function_evaluator, generate_exponential_function_evaluator, } = require('../../../transforms/ml');
-const { mapPredictionToDigiFiScore } = require('../../resourcehelpers');
+const { mapPredictionToClariFIScore } = require('../../resourcehelpers');
 
-function generateIndustrySumBins({maxScore, minScore, interval, digifiScoreArr, comparisonScoreArr, inputAnalysisDataArr, industry_header_map, defaultModelRowObj, originalDoc, modelHeaders, strategyDataSchema, encoders, maxChargeOffTime }) {
+function generateIndustrySumBins({maxScore, minScore, interval, ClariFIScoreArr, comparisonScoreArr, inputAnalysisDataArr, industry_header_map, defaultModelRowObj, originalDoc, modelHeaders, strategyDataSchema, encoders, maxChargeOffTime }) {
   const numIntervals = (interval < 50) ? Math.floor((maxScore - minScore) / interval) + 1 : Math.floor((maxScore - minScore) / interval);
   return inputAnalysisDataArr.reduce((aggregate, row, i) => {
     if (i === 0) {
@@ -30,10 +30,10 @@ function generateIndustrySumBins({maxScore, minScore, interval, digifiScoreArr, 
       })
     }
 
-    const rowScore = digifiScoreArr[i].score; // e.g. 800
+    const rowScore = ClariFIScoreArr[i].score; // e.g. 800
     let scoreBin = Math.floor((maxScore - rowScore) / interval);
     scoreBin = (scoreBin >= numIntervals) ? numIntervals - 1 : scoreBin;
-    const timeSeriesBin = digifiScoreArr[i].chargeOffTime;
+    const timeSeriesBin = ClariFIScoreArr[i].chargeOffTime;
     if (!isNaN(parseFloat(row[industry_header_map['charge_off_amount']]))) {
       aggregate[scoreBin]['charge_off_total'] += parseFloat(row[industry_header_map['charge_off_amount']]);
       aggregate[ scoreBin ][ 'charge_off_count' ] += 1;
@@ -143,11 +143,11 @@ function handleLoanVolumeByAmount(sumsObj) {
 
 function handleAverageScoreRows(sumsObj, i) {
   const { comparison_score, loan_total_count } = sumsObj;
-  const maxDigiFiScore = 850;
+  const maxClariFIScore = 850;
   if (typeof comparison_score === 'number' && typeof loan_total_count === 'number' && !isNaN(parseFloat(comparison_score / loan_total_count))) {
     return {
       comparison_score: parseFloat(comparison_score / loan_total_count),
-      digifi_score: maxDigiFiScore - i * 10,
+      ClariFI_score: maxClariFIScore - i * 10,
     }
   } else {
     return null;
@@ -194,7 +194,7 @@ async function formatScoreAnalysis(mlmodel, datasource, modelHeaders, inputAnaly
     let actual0Count = 0;
     let maxChargeOffTime;
     const comparisonScoreArr = [];
-    const digifiScoreArr = batchPredictions.map((el, i) => {
+    const ClariFIScoreArr = batchPredictions.map((el, i) => {
       // handle actual1count and actual0Count
       if (originalDoc[ i ][ historicalResultIdx ] === '1' || originalDoc[ i ][ historicalResultIdx ] === 1 || originalDoc[ i ][ historicalResultIdx ] === 'true' || originalDoc[ i ][ historicalResultIdx ] === 'true') {
         actual1Count += 1;
@@ -203,14 +203,14 @@ async function formatScoreAnalysis(mlmodel, datasource, modelHeaders, inputAnaly
       }
       // create comparison score array
       comparisonScoreArr.push(inputAnalysisData[ i ][ industry_header_map[ 'comparison_score' ] ]);
-      // handle digifiScoreArr setup
+      // handle ClariFIScoreArr setup
       totalLoanAmount += inputAnalysisData[ i ][ industry_header_map[ 'loan_amount' ] ]
       const chargeOffTime = isNaN(inputAnalysisData[ i ][ industry_header_map[ 'charge_off_month' ] ]) ? null : inputAnalysisData[ i ][ industry_header_map[ 'charge_off_month' ] ];
       if (chargeOffTime !== null) {
         if (maxChargeOffTime === undefined || chargeOffTime > maxChargeOffTime) maxChargeOffTime = chargeOffTime;
       } 
       return {
-        score: mapPredictionToDigiFiScore(el),
+        score: mapPredictionToClariFIScore(el),
         chargeOffTime,
       }
     });
@@ -231,9 +231,9 @@ async function formatScoreAnalysis(mlmodel, datasource, modelHeaders, inputAnaly
       return aggregate;
     }, {});
 
-    const sum_rows_10 = generateIndustrySumBins({ maxScore: 850, minScore: 300, interval: 10, defaultModelRowObj, digifiScoreArr, comparisonScoreArr, inputAnalysisDataArr: inputAnalysisData, industry_header_map, originalDoc, modelHeaders, strategyDataSchema, encoders, maxChargeOffTime });
-    const sum_rows_20 = generateIndustrySumBins({ maxScore: 850, minScore: 300, interval: 20, digifiScoreArr, comparisonScoreArr, inputAnalysisDataArr: inputAnalysisData, industry_header_map, originalDoc, modelHeaders, strategyDataSchema, encoders, maxChargeOffTime });
-    const sum_rows_50 = generateIndustrySumBins({ maxScore: 850, minScore: 300, interval: 50, defaultModelRowObj, digifiScoreArr, comparisonScoreArr, inputAnalysisDataArr: inputAnalysisData, industry_header_map, originalDoc, modelHeaders, strategyDataSchema, encoders, maxChargeOffTime });
+    const sum_rows_10 = generateIndustrySumBins({ maxScore: 850, minScore: 300, interval: 10, defaultModelRowObj, ClariFIScoreArr, comparisonScoreArr, inputAnalysisDataArr: inputAnalysisData, industry_header_map, originalDoc, modelHeaders, strategyDataSchema, encoders, maxChargeOffTime });
+    const sum_rows_20 = generateIndustrySumBins({ maxScore: 850, minScore: 300, interval: 20, ClariFIScoreArr, comparisonScoreArr, inputAnalysisDataArr: inputAnalysisData, industry_header_map, originalDoc, modelHeaders, strategyDataSchema, encoders, maxChargeOffTime });
+    const sum_rows_50 = generateIndustrySumBins({ maxScore: 850, minScore: 300, interval: 50, defaultModelRowObj, ClariFIScoreArr, comparisonScoreArr, inputAnalysisDataArr: inputAnalysisData, industry_header_map, originalDoc, modelHeaders, strategyDataSchema, encoders, maxChargeOffTime });
     const loan_volume_by_count_rows_10 = sum_rows_10.map(handleLoanVolumeByCount);
     const loan_volume_by_amount_rows_10 = sum_rows_10.map(handleLoanVolumeByAmount);
     const cdr_by_count_rows_10 = sum_rows_10.map(handleCDRByCount);
@@ -350,18 +350,18 @@ async function formatScoreAnalysis(mlmodel, datasource, modelHeaders, inputAnaly
     })
     
     // bin label creation
-    const maxDigiFiScore = 850;
-    const minDigifiScore = 300;
-    const bins_10 = new Array(Math.floor((maxDigiFiScore - minDigifiScore) / 10) + 1).fill(maxDigiFiScore).map((el, i) => `${el - 10 * i}`)
-    const bins_20 = new Array(Math.floor((maxDigiFiScore - minDigifiScore) / 20) + 1).fill(maxDigiFiScore - 20).map((el, i) => { 
-      if (i === Math.floor((maxDigiFiScore - minDigifiScore) / 20)) {
+    const maxClariFIScore = 850;
+    const minClariFIScore = 300;
+    const bins_10 = new Array(Math.floor((maxClariFIScore - minClariFIScore) / 10) + 1).fill(maxClariFIScore).map((el, i) => `${el - 10 * i}`)
+    const bins_20 = new Array(Math.floor((maxClariFIScore - minClariFIScore) / 20) + 1).fill(maxClariFIScore - 20).map((el, i) => {
+      if (i === Math.floor((maxClariFIScore - minClariFIScore) / 20)) {
         return '300 - 310';
       } else {
         return `${(el - 20 * i) + 1} - ${el - 20 * (i - 1)}`
       }
     })
-    const bins_50 = new Array(Math.floor((maxDigiFiScore - minDigifiScore) / 50)).fill(maxDigiFiScore - 50).map((el, i) => {
-      if (i === Math.floor((maxDigiFiScore - minDigifiScore) / 20)) {
+    const bins_50 = new Array(Math.floor((maxClariFIScore - minClariFIScore) / 50)).fill(maxClariFIScore - 50).map((el, i) => {
+      if (i === Math.floor((maxClariFIScore - minClariFIScore) / 20)) {
         return '300 - 350';
       } else {
         return `${(el - 50 * i) + 1} - ${el - 50 * (i - 1)}`
@@ -412,25 +412,25 @@ async function formatScoreAnalysis(mlmodel, datasource, modelHeaders, inputAnaly
       const binWeight = (loan_volume_by_amount_rows_10[i].charged_off + loan_volume_by_amount_rows_10[i].fully_paid) / totalLoanAmount;
       const numTimes = Math.floor(binWeight * 1000);
       if (i === 0 && (score === null || score === Infinity)) {
-        aggregate.digifi_score_arr.push(maxDigiFiScore);
+        aggregate.ClariFI_score_arr.push(maxClariFIScore);
         aggregate.annual_default_rate_arr.push(0);
       }
       
       if (score !== null && score !== Infinity) {
-        aggregate.digifi_score_arr.push(...new Array(numTimes).fill(maxDigiFiScore - 10 * i));
+        aggregate.ClariFI_score_arr.push(...new Array(numTimes).fill(maxClariFIScore - 10 * i));
         aggregate.annual_default_rate_arr.push(...new Array(numTimes).fill(score));
       }
       
       if (score !== null && score !== 0 && score !== Infinity) {
-        aggregate.digifi_score_arr_power.push(...new Array(numTimes).fill(maxDigiFiScore - 10 * i));
+        aggregate.ClariFI_score_arr_power.push(...new Array(numTimes).fill(maxClariFIScore - 10 * i));
         aggregate.annual_default_rate_arr_power.push(...new Array(numTimes).fill(score));
       }
 
       return aggregate;
-    }, { digifi_score_arr: [], annual_default_rate_arr: [], digifi_score_arr_power: [], annual_default_rate_arr_power: [] });
+    }, { ClariFI_score_arr: [], annual_default_rate_arr: [], ClariFI_score_arr_power: [], annual_default_rate_arr_power: [] });
 
     // generate projected_adr functions
-    const validProjectedADRFunctions = handleRunMLJS({x: projected_annual_default_rate_configs.digifi_score_arr, y: projected_annual_default_rate_configs.annual_default_rate_arr, x_power: projected_annual_default_rate_configs.digifi_score_arr_power, y_power: projected_annual_default_rate_configs.annual_default_rate_arr_power, });
+    const validProjectedADRFunctions = handleRunMLJS({x: projected_annual_default_rate_configs.ClariFI_score_arr, y: projected_annual_default_rate_configs.annual_default_rate_arr, x_power: projected_annual_default_rate_configs.ClariFI_score_arr_power, y_power: projected_annual_default_rate_configs.annual_default_rate_arr_power, });
     const topProjectedADRFunction = validProjectedADRFunctions.sort((a, b) => b.score.r2 - a.score.r2)[0];
 
     // staging newdoc for create and removing historical result from modelDriverMap
@@ -469,7 +469,7 @@ async function formatScoreAnalysis(mlmodel, datasource, modelHeaders, inputAnaly
     // attaching adr_projected_10 to newdoc if function available
     if (topProjectedADRFunction) {
       const applyTransformFunc = new Function('x', topProjectedADRFunction.evaluator);
-      newdoc.results.adr_projected_10 = new Array(Math.floor((maxDigiFiScore - minDigifiScore) / 10) + 1).fill(0).map((val, i) => applyTransformFunc(maxDigiFiScore - 10 * i)).map(predictedVal => predictedVal < 0 ? 0 : predictedVal > 1 ? 1 : predictedVal);
+      newdoc.results.adr_projected_10 = new Array(Math.floor((maxClariFIScore - minClariFIScore) / 10) + 1).fill(0).map((val, i) => applyTransformFunc(maxClariFIScore - 10 * i)).map(predictedVal => predictedVal < 0 ? 0 : predictedVal > 1 ? 1 : predictedVal);
       newdoc.results.projection_evaluator = topProjectedADRFunction.evaluator;
     }
     const ScoreAnalysis = periodic.datas.get('standard_scoreanalysis');

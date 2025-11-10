@@ -85,13 +85,13 @@
 //                             children: 'The platform can produce PDF documents as part of automated processes.',
 //                           }, {
 //                             component: 'p',
-//                             children: 'Document creation templates are set up by DigiFi. Once added, documents can be created in processes by adding document creation modules to strategies. These modules will populate the document’s fields with the variables and/or values selected within the module configuration.',
+//                             children: 'Document creation templates are set up by ClariFI. Once added, documents can be created in processes by adding document creation modules to strategies. These modules will populate the document’s fields with the variables and/or values selected within the module configuration.',
 //                           }, {
 //                             component: 'p',
 //                             children: 'To manage a document creation template, select it from the list on the right.',
 //                           }, {
 //                             component: 'p',
-//                             children: 'To add additional document creation templates please contact DigiFi’s support team.',
+//                             children: 'To add additional document creation templates please contact ClariFI’s support team.',
 //                           },
 //                           ],
 //                         },

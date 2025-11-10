@@ -46,7 +46,7 @@ module.exports = {
         },
       },
       'pageData': {
-        'title': 'DigiFi | Decision Engine',
+        'title': 'ClariFI | Decision Engine',
         'navLabel': 'Decision Engine',
       },
       'onFinish': 'render',

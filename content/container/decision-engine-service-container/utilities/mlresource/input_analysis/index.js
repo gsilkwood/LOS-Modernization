@@ -13,12 +13,12 @@ const mongodb = require('mongodb');
 const ObjectId = mongodb.ObjectID;
 const { openDownloadStreamAsync } = require('../resourcehelpers');
 
-async function runDigifiInputAnalysis(mlmodel) {
+async function runClariFIInputAnalysis(mlmodel) {
   try {
     const Datasource = periodic.datas.get('standard_datasource');
     const model_type = mlmodel.type;
     const datasource = await Datasource.model.findOne({ _id: mlmodel.datasource.toString() });
-    const providers = THEMESETTINGS.machinelearning.digifi_models[ model_type ];
+    const providers = THEMESETTINGS.machinelearning.ClariFI_models[ model_type ];
     const s3 = periodic.aws.s3;
     let originalTrainingDocParams = {
       Bucket: datasource.original_file[ 'training' ].Bucket,
@@ -60,4 +60,4 @@ async function runDigifiInputAnalysis(mlmodel) {
   }
 }
 
-module.exports = runDigifiInputAnalysis;
+module.exports = runClariFIInputAnalysis;

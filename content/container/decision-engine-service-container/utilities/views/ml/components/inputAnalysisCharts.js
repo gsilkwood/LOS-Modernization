@@ -3,7 +3,7 @@ const CONSTANTS = require('../../../constants');
 const capitalize = require('capitalize');
 const numeral = require('numeral');
 const util = require('util');
-const DIGIFI_COLOR = CONSTANTS.DIGIFI_COLOR;
+const ClariFI_COLOR = CONSTANTS.ClariFI_COLOR;
 const COLORS = CONSTANTS.CHART_COLORS;
 
 function _generateBinsLabels(bindata, header, num_bins) {
@@ -124,7 +124,7 @@ function _getTotalLoanVolumeChart({ configuration, current_data, providers, mode
         dataKey: 'actual_0',
         name: 'Fully Paid',
         stackId: 'a',
-        fill: DIGIFI_COLOR,
+        fill: ClariFI_COLOR,
         isAnimationActive: false,
       },
     }, ];
@@ -230,7 +230,7 @@ function _getPopulationAnalysisCharts({ configuration, current_data, providers, 
       props: {
         dataKey: 'population_metric',
         name: configuration.subsection_title,
-        fill: DIGIFI_COLOR,
+        fill: ClariFI_COLOR,
         isAnimationActive: false,
       },
     }, ];
@@ -335,7 +335,7 @@ function _getCumulativeDefaultTimeSeriesCharts({ configuration, current_data, pr
           type: 'monotone',
           dot: false,
           name: 'summary',
-          stroke: DIGIFI_COLOR,
+          stroke: ClariFI_COLOR,
           isAnimationActive: false,
         },
       });

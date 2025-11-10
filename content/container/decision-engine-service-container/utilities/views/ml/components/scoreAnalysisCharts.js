@@ -2,7 +2,7 @@
 const CONSTANTS = require('../../../constants');
 const capitalize = require('capitalize');
 const util = require('util');
-const DIGIFI_COLOR = CONSTANTS.DIGIFI_COLOR;
+const ClariFI_COLOR = CONSTANTS.ClariFI_COLOR;
 const SAMPLE_COLORS = CONSTANTS.CHART_COLORS;
 
 function _getLoanVolumeChart({ configuration, providers, modeldata, query, scoredata, }) {
@@ -32,7 +32,7 @@ function _getLoanVolumeChart({ configuration, providers, modeldata, query, score
       dataKey: 'fully_paid',
       name: 'Fully Paid',
       stackId: 'a',
-      fill: DIGIFI_COLOR,
+      fill: ClariFI_COLOR,
       isAnimationActive: false,
     },
   }, {
@@ -78,7 +78,7 @@ function _getLoanVolumeChart({ configuration, providers, modeldata, query, score
             // disableTextFormat: true,
           },
           label: {
-            value: 'DigiFi Score',
+            value: 'ClariFI Score',
             angle: '0',
             position: 'bottom',
             offset: '30',
@@ -146,7 +146,7 @@ function _getAnnualDefaultRateChart({ configuration, providers, modeldata, query
       dataKey: 'annual_default_rate',
       name: 'Annual Default Rate %',
       stackId: 'a',
-      fill: DIGIFI_COLOR,
+      fill: ClariFI_COLOR,
       isAnimationActive: false,
     },
   }, ];
@@ -174,7 +174,7 @@ function _getAnnualDefaultRateChart({ configuration, providers, modeldata, query
             // disableTextFormat: true,
           },
           label: {
-            value: 'DigiFi Score',
+            value: 'ClariFI Score',
             angle: '0',
             position: 'bottom',
             offset: '30',
@@ -238,7 +238,7 @@ function _getCumulativeDefaultRateChart({ configuration, providers, modeldata, q
       dataKey: 'cumulative_default_rate',
       name: `Cumulative Default Rate % By ${capitalize(type)}`,
       stackId: 'a',
-      fill: DIGIFI_COLOR,
+      fill: ClariFI_COLOR,
       isAnimationActive: false,
     },
   }, ];
@@ -266,7 +266,7 @@ function _getCumulativeDefaultRateChart({ configuration, providers, modeldata, q
             // disableTextFormat: true,
           },
           label: {
-            value: 'DigiFi Score',
+            value: 'ClariFI Score',
             angle: '0',
             position: 'bottom',
             offset: '30',
@@ -334,7 +334,7 @@ function _getTimeSeriesChart({ configuration, providers, modeldata, query, score
           type: 'monotone',
           dot: false,
           name: bins[ line_idx ],
-          stroke: SAMPLE_COLORS[ idx ] || DIGIFI_COLOR,
+          stroke: SAMPLE_COLORS[ idx ] || ClariFI_COLOR,
           isAnimationActive: false,
         },
       };
@@ -479,7 +479,7 @@ function _getModelDriverChart({ configuration, providers, modeldata, query, scor
                 numTicks: chartData.length,
               },
               label: {
-                value: 'DigiFi Score',
+                value: 'ClariFI Score',
                 angle: '0',
                 position: 'bottom',
                 offset: '30',
@@ -531,7 +531,7 @@ function _getModelDriverChart({ configuration, providers, modeldata, query, scor
           type: 'monotone',
           dot: false,
           // name: bins[line_idx],
-          stroke: DIGIFI_COLOR,
+          stroke: ClariFI_COLOR,
           isAnimationActive: false,
           connectNulls: true,
         },
@@ -557,7 +557,7 @@ function _getModelDriverChart({ configuration, providers, modeldata, query, scor
                 numTicks: chartData.length,
               },
               label: {
-                value: 'DigiFi Score',
+                value: 'ClariFI Score',
                 angle: '0',
                 position: 'bottom',
                 offset: '30',
@@ -625,8 +625,8 @@ function _getPredictivePowerChart({ configuration, providers, modeldata, query, 
       props: {
         data: provider_result.roc_distribution,
         line: true,
-        name: 'DigiFi Score',
-        fill: DIGIFI_COLOR,
+        name: 'ClariFI Score',
+        fill: ClariFI_COLOR,
         isAnimationActive: false,
       },
     }, {
@@ -739,7 +739,7 @@ function _getAverageScoreChart({ configuration, providers, modeldata, query, sco
   const numBins = Math.floor((max_score - minimum_score) / 10) + 1;
   if (!modeldata[ provider ] || !scoredata || !scoredata.results || !scoredata.results.average_score_rows) return null;
   const average_score_rows = scoredata.results.average_score_rows.slice(0, numBins).filter(el => !!el).map(row => {
-    if (row) row.digifi_score = String(row.digifi_score);
+    if (row) row.ClariFI_score = String(row.ClariFI_score);
     return row;
   })
   let chartLines = [ {
@@ -751,7 +751,7 @@ function _getAverageScoreChart({ configuration, providers, modeldata, query, sco
       type: 'monotone',
       dot: false,
       // name: bins[line_idx],
-      stroke: DIGIFI_COLOR,
+      stroke: ClariFI_COLOR,
       isAnimationActive: false,
       connectNulls: true,
     },
@@ -771,14 +771,14 @@ function _getAverageScoreChart({ configuration, providers, modeldata, query, sco
         component: 'recharts.XAxis',
         hasWindowComponent: true,
         props: {
-          dataKey: 'digifi_score',
+          dataKey: 'ClariFI_score',
           interval: numTicks,
           tick: 'func:window.__ra_custom_elements.CustomAxisTick',
           windowCompProps: {
             numTicks: average_score_rows.length,
           },
           label: {
-            value: 'DigiFi Score',
+            value: 'ClariFI Score',
             angle: '0',
             position: 'bottom',
             offset: '30',
@@ -824,7 +824,7 @@ function _getProjectedAnnualDefaultRateChart({ configuration, providers, modelda
   const bins = scoredata.results[ 'bins_10' ].slice(0, numBins);
   const adr_projected_10 = scoredata.results.adr_projected_10.slice(0, numBins).reduce((aggregate, score, i) => {
     const binData = {
-      digifi_score: bins[ i ],
+      ClariFI_score: bins[ i ],
       projected_adr: score
     }
     aggregate.push(binData);
@@ -838,7 +838,7 @@ function _getProjectedAnnualDefaultRateChart({ configuration, providers, modelda
       dataKey: 'projected_adr',
       name: 'Projected Annual Default Rate %',
       stackId: 'a',
-      fill: DIGIFI_COLOR,
+      fill: ClariFI_COLOR,
       isAnimationActive: false,
     },
   }, ];
@@ -857,14 +857,14 @@ function _getProjectedAnnualDefaultRateChart({ configuration, providers, modelda
         component: 'recharts.XAxis',
         hasWindowComponent: true,
         props: {
-          dataKey: 'digifi_score',
+          dataKey: 'ClariFI_score',
           interval: numTicks,
           tick: 'func:window.__ra_custom_elements.CustomAxisTick',
           windowCompProps: {
             numTicks: adr_projected_10.length,
           },
           label: {
-            value: 'DigiFi Score',
+            value: 'ClariFI Score',
             angle: '0',
             position: 'bottom',
             offset: '30',

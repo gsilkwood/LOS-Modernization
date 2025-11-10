@@ -174,7 +174,7 @@ module.exports = {
       ],
       onFinish: 'render',
       pageData: {
-        'title': 'DigiFi | Decision Engine',
+        'title': 'ClariFI | Decision Engine',
         'navLabel': 'Decision Engine',
       },
     },
